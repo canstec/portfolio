@@ -1,0 +1,158 @@
+---
+import CaseStudy from '../../layouts/CaseStudy.astro';
+---
+<CaseStudy
+  title="Project name — Cansu Tecimer"
+  description="One-sentence summary of the case study."
+>
+
+  <section class="hero container">
+    <a href="/work/" class="back-link">← All projects</a>
+    <p class="eyebrow"><span class="dot"></span> Case study · Company name</p>
+    <h1 class="display">Project <em>title</em> goes here.</h1>
+    <p class="lede">
+      One- or two-sentence framing that sets up the problem and the outcome — the hook that tells a reader why this case study is worth 3 minutes of their time.
+    </p>
+  </section>
+
+  <section class="meta-strip container">
+    <div class="meta-item">
+      <span class="meta-label">Role</span>
+      <span class="meta-value">Your role here</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Duration</span>
+      <span class="meta-value">Month — Month Year</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Company</span>
+      <span class="meta-value">Company name</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Team</span>
+      <span class="meta-value">Disciplines on the team</span>
+    </div>
+  </section>
+
+  <section class="feature-image container">
+    <figure class="feature-card">
+      <img src="/images/WP-HP-thumbnail.png" alt="Replace with the hero image for this project" />
+    </figure>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">01</span>
+        <h2>Overview</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">Lead sentence in a larger size — sets up the context of the project.</p>
+        <p>Second paragraph: describe the problem, the team, the constraints.</p>
+        <p>Third paragraph: close the overview with what you did at a high level and what happened.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">02</span>
+        <h2>Section heading</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">Use this pattern for a section that has supporting imagery alongside the text.</p>
+        <p>Body copy here. You can use <strong>bolded phrases</strong> for emphasis — they pick up the violet underline automatically.</p>
+      </div>
+    </div>
+
+    {/* bento grid for photos: one large + two smaller */}
+    <div class="bento">
+      <figure class="bento-item bento-lg">
+        <img src="/images/HP-workshop-4.jpg" alt="Replace" />
+      </figure>
+      <figure class="bento-item">
+        <img src="/images/HP-workshop-1-1.jpg" alt="Replace" />
+      </figure>
+      <figure class="bento-item">
+        <img src="/images/HP-workshop-2.jpg" alt="Replace" />
+      </figure>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">03</span>
+        <h2>Section with a wide figure</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">Use this when you have a single hero-sized visual (e.g. a structure diagram, a flow, a full-width screen).</p>
+      </div>
+    </div>
+
+    <figure class="wide-figure">
+      <img src="/images/HP-structure.png" alt="Replace" />
+    </figure>
+  </section>
+
+  <section class="results">
+    <div class="container">
+      <p class="eyebrow"><span class="dot"></span> Results in market</p>
+      <h2 class="section-title">A punchy one-line summary of the impact.</h2>
+
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-num">##</span>
+          <p>Sentence describing the first result. Use <em>italics</em> for the noteworthy phrase.</p>
+        </div>
+        <div class="stat">
+          <span class="stat-num">↑</span>
+          <p>Sentence describing the second result.</p>
+        </div>
+        <div class="stat">
+          <span class="stat-num">↓</span>
+          <p>Sentence describing the third result.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">04</span>
+        <h2>Key takeaways & learnings</h2>
+      </aside>
+      <div class="story-body">
+        <div class="learning-grid">
+          <article>
+            <h4>Takeaway one</h4>
+            <p>A short paragraph with the lesson, framed so a reader can apply it to their own work.</p>
+          </article>
+          <article>
+            <h4>Takeaway two</h4>
+            <p>A short paragraph with the lesson.</p>
+          </article>
+          <article>
+            <h4>Takeaway three</h4>
+            <p>A short paragraph with the lesson.</p>
+          </article>
+          <article>
+            <h4>Takeaway four</h4>
+            <p>A short paragraph with the lesson.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/*
+    Other section patterns available from the first case study:
+    - <section class="hifi-strip"> ... </section>  (full-width lavender strip with eyebrow + 4 phone screens in a row)
+    - <article class="segment"><div class="segment-figures"> ... </div></article>  (horizontal scroll slider with intro card)
+    - <div class="wireframe-set"> ... </div>  (2-column wireframes with clickable hotspot dots + tooltips)
+    Copy any of these blocks verbatim from homepage-design-for-returning-users.astro.
+  */}
+
+</CaseStudy>

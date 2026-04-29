@@ -1,0 +1,273 @@
+---
+import CaseStudy from '../../layouts/CaseStudy.astro';
+---
+<CaseStudy
+  title="HelloFresh My Menu 2.0 — Cansu Tecimer"
+  description="Redesigning the area where HelloFresh customers manage recurring deliveries — from research and prototypes to A/B test results and the limits of what the experiment told us."
+  nextProject={{
+    title: "Building a cycling coaching app from zero",
+    url: "/portfolio/steady-app/"
+  }}
+>
+
+  <section class="hero container">
+    <a href="/work/" class="back-link">← All projects</a>
+    <p class="eyebrow"><span class="dot"></span> Case study · HelloFresh</p>
+    <h1 class="display">HelloFresh <em>My Menu 2.0</em>.</h1>
+    <p class="lede">
+      A design-initiated redesign of how HelloFresh customers manage future deliveries — clearer weekly navigation, less information overload, and key actions made obvious.
+    </p>
+  </section>
+
+  <section class="meta-strip container">
+    <div class="meta-item">
+      <span class="meta-label">Year</span>
+      <span class="meta-value">2017 – 2018</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Skills</span>
+      <span class="meta-value">Research, IA, Interaction &amp; Visual design</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Design team</span>
+      <span class="meta-value">Cansu Tecimer, Joanne Wong, Isabel Wellbery</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Company</span>
+      <span class="meta-value">HelloFresh</span>
+    </div>
+  </section>
+
+  <section class="feature-image container">
+    <figure class="feature-card feature-card--row feature-card--row-two">
+      <img src="/images/HF-MyMenu-vA.png" alt="HelloFresh My Menu 2.0 — variant A" />
+      <img src="/images/HF-MyMenu-vB.png" alt="HelloFresh My Menu 2.0 — variant B" />
+    </figure>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">01</span>
+        <h2>Overview</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">"My Menu" is the space within the HelloFresh account area where users manage their plan on a recurring basis. It encompasses all functions including scheduling of deliveries to choosing the contents of those deliveries. This area is only available to users who have an account and one or more HelloFresh plans.</p>
+        <p>We kicked off a design-initiated project to deep-dive into the problems and improvements that could be made within this area, especially targeting management of future deliveries. We wanted to solve the issues around navigating through the weeks, information overload in each weekly screen and communicate the key functions within each week better to the users.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">02</span>
+        <h2>Background research</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para"><strong>Understanding current pain points.</strong> We analyzed the status quo going through cancellation reasons, fullstory recordings, doing competitor analysis and using insights from past user tests.</p>
+        <ul class="findings-list">
+          <li>Customers were getting unwanted 2nd deliveries because they did not understand HelloFresh's recurring business model</li>
+          <li>The main functions of "Skipping" and "Selecting Meals" were getting lost in the UI, causing people to cancel or call customer care about these</li>
+          <li>The weekly navigation at the top was getting lost and users struggled to navigate to upcoming weeks</li>
+        </ul>
+      </div>
+    </div>
+
+    <figure class="feature-card">
+      <img src="/images/HF-MyMenu-PainPoints.png" alt="Annotated screenshots of the original My Menu — UI for navigating weeks isn't noticed, unnecessary CTAs, main actions get lost" />
+    </figure>
+
+    <div class="story-grid story-grid--findings">
+      <aside class="story-label">
+        <span class="index">User survey</span>
+      </aside>
+      <div class="story-body">
+        <h3 class="sub-heading">"What is the first thing you'd like to do when you log into your account?"</h3>
+        <p style="font-size: 19px;">To understand the main actions users wanted to do, we launched an on-site survey asking them the first thing they would like to do when they log into their account. Across 4 English-speaking markets (US, UK, Canada and Australia), the results showed that HelloFresh users wanted to see an overview of their deliveries. The numbers shown (42.6%, 33.9%, 23.5%) are a breakdown of US respondents.</p>
+        <div class="stats stats--inline">
+          <div class="stat">
+            <span class="stat-num">43%</span>
+            <p>See an overview of all my upcoming deliveries</p>
+          </div>
+          <div class="stat">
+            <span class="stat-num">34%</span>
+            <p>Select the meals in my box for next week</p>
+          </div>
+          <div class="stat">
+            <span class="stat-num">23%</span>
+            <p>See what I am receiving this week</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-statement">
+      <span class="index">How might we</span>
+      <p class="pull-quote">"How might we communicate the recurring nature of our business, information about delivery status and cut-off dates better to our customers?"</p>
+    </div>
+
+    <div class="story-grid story-grid--findings">
+      <aside class="story-label">
+        <span class="index">Hypothesis</span>
+      </aside>
+      <div class="story-body">
+        <p><strong>We believe that</strong> our customers are struggling to plan their future deliveries because navigating between weeks is unintuitive.</p>
+        <p><strong>So if we</strong> redesigned this area to show all future deliveries on one screen as an overview (1) / redesigned this area to display future delivery dates more prominently (2),</p>
+        <p><strong>We would see</strong> an increase in future delivery planning (meal choice / pause / unpause rate) and a decrease in CC contacts / cancellations regarding these features.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">03</span>
+        <h2>Prototypes</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">2 prototypes addressing the 2 hypotheses formed.</p>
+      </div>
+    </div>
+
+    <div class="gallery-two">
+      <figure>
+        <img src="/images/HF-MyMenu-Proto-Overview.png" alt="Overview prototype — feed of all upcoming deliveries on one screen" />
+        <figcaption>Overview — a feed of all upcoming deliveries on one screen. The goal was to allow users to see the status and date of all upcoming deliveries easily in one scroll. The contents of each delivery was of secondary importance.</figcaption>
+      </figure>
+      <figure>
+        <img src="/images/HF-MyMenu-Proto-WoW.png" alt="Week over Week prototype — delivery dates anchored at the top with detailed contents" />
+        <figcaption>WoW — the "Week over Week" prototype displayed the upcoming delivery dates at the top of the screen to increase visibility and make it easier to navigate. The contents and actions of each delivery was displayed more prominently compared to "Overview".</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">04</span>
+        <h2>User testing the 2 prototypes</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">We conducted 2 user testing rounds (one with new joiners from work, one with external participants) to figure out if we should go with the Overview or a WoW prototype. These sessions came back with overwhelmingly even results, where each variant was preferred by approximately 50% of the participants.</p>
+        <ul class="findings-list">
+          <li>Participants wanted to see the cut-off and delivery dates clearly.</li>
+          <li>Participants preferred big and bold CTAs, even though smaller links were also discoverable. The feed version used these smaller links in our tests.</li>
+          <li>Participants reacted positively to color changes indicating delivery status.</li>
+          <li>Participants showed a preference towards familiar UI patterns. In the first version of the WoW version, the main concern participants had was that it looked too complicated and the feed version was familiar to apps such as Facebook.</li>
+          <li>Although participants liked familiar interfaces, there was a light preference towards green elements since they represented HelloFresh-ness.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">05</span>
+        <h2>Visual explorations</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">Based on the findings from the first 2 user test rounds, we started creating the final visual design.</p>
+      </div>
+    </div>
+
+    <div class="concept-pager concept-pager--borderless">
+      <div class="concept-pager-stage">
+        <button class="concept-pager-arrow concept-pager-arrow--prev" aria-label="Previous slide">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="10 3 5 8 10 13"/></svg>
+        </button>
+        <figure class="concept-pager-image is-active" data-slide="1">
+          <img src="/images/HF-MyMenu-VisualExploration-Overview.png" alt="Final visual design — Overview variant" />
+        </figure>
+        <figure class="concept-pager-image" data-slide="2">
+          <img src="/images/HF-MyMenu-VisualExploration-WoW.png" alt="Final visual design — Week over Week variant" />
+        </figure>
+        <button class="concept-pager-arrow concept-pager-arrow--next" aria-label="Next slide">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 3 11 8 6 13"/></svg>
+        </button>
+      </div>
+      <div class="concept-pager-dots">
+        <button class="concept-pager-dot is-active" data-target="1" aria-label="Show slide 1"></button>
+        <button class="concept-pager-dot" data-target="2" aria-label="Show slide 2"></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">06</span>
+        <h2>Final UI &amp; experiment setup</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">We launched the 2 variants (Overview and WoW) as an A/B test, targeted at 10% of all new US customers who checked-out with a Classic plan on mobile web. After checkout, half of these users would see the <strong>Overview</strong> variation, and the other half would see the <strong>WoW</strong> variation.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="feature-image container">
+    <figure class="feature-card feature-card--titled">
+      <p class="eyebrow"><span class="dot"></span> Final design — 2 variants</p>
+      <div class="feature-card-row feature-card-row--two">
+        <img src="/images/HF-MyMenu-vA.png" alt="Final design — variant A (Overview)" />
+        <img src="/images/HF-MyMenu-vB.png" alt="Final design — variant B (Week over Week)" />
+      </div>
+    </figure>
+  </section>
+
+  <section class="results">
+    <div class="container">
+      <p class="eyebrow"><span class="dot"></span> Analysis</p>
+      <h2 class="section-title">After 10 weeks, the "Overview" variant showed more promise.</h2>
+
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-num">+2%</span>
+          <p>Boxes shipped per customer.</p>
+        </div>
+        <div class="stat">
+          <span class="stat-num">−9%</span>
+          <p>Refunds per customer.</p>
+        </div>
+        <div class="stat">
+          <span class="stat-num">—</span>
+          <p>No significant change in CLV predictions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">07</span>
+        <h2>Learnings</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">This was the first retention experiment I ran, at HelloFresh and in my career. It taught me the fundamentals of experimental rigor: isolating hypotheses, building to learn specific things, and making changes meaningful enough to get real signal. Lessons I've carried into every experiment since.</p>
+        <ul class="findings-list">
+          <li>This layout change was only visible on mobile web, whereas experiment participants interacted with their accounts mostly on other devices.</li>
+          <li>We only targeted customers who converted on mobile web, so <strong>we perhaps introduced a selection bias</strong> as these customers might not represent our audience overall.</li>
+          <li>We changed many aspects of the UI, including the delivery status area as well as how recipes were displayed. This made <strong>understanding the reason behind the numbers very difficult</strong>.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">08</span>
+        <h2>Next steps</h2>
+      </aside>
+      <div class="story-body">
+        <ul class="findings-list">
+          <li>To understand the full impact of the redesign, we will expose the same experience in different platforms. Users tend to use iOS and desktop web for continued account management.</li>
+          <li>To understand reasons behind the numbers, we will isolate specific parts of the redesign such as "delivery status and navigation" vs "menu UI" and launch smaller, targeted experiments.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</CaseStudy>

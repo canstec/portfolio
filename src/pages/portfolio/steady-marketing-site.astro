@@ -1,0 +1,230 @@
+---
+import CaseStudy from '../../layouts/CaseStudy.astro';
+---
+<CaseStudy
+  title="Steady marketing site — Cansu Tecimer"
+  description="Designing and building the marketing site for Steady, an AI cycling coaching app — where a hierarchy flip and an AI-assisted build changed what was possible."
+  nextProject={{
+    title: "Improving destination discovery",
+    url: "/portfolio/improving-destination-discovery/"
+  }}
+>
+
+  <section class="hero container">
+    <a href="/work/" class="back-link">← All projects</a>
+    <p class="eyebrow"><span class="dot"></span> Case study · Steady</p>
+    <h1 class="display">Building <em>Steady's</em> marketing site.</h1>
+    <p class="lede">
+      Building the marketing website for an AI cycling coaching app while sharpening the product's brand positioning — a case study about the process and the skill unlock coming from AI tools.
+    </p>
+  </section>
+
+  <section class="meta-strip container">
+    <div class="meta-item">
+      <span class="meta-label">Duration</span>
+      <span class="meta-value">February 2026</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Role</span>
+      <span class="meta-value">Brand direction, content strategy, visual design, animation, front-end build (via Claude Code)</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Team</span>
+      <span class="meta-value">Me (design &amp; build), co-founder (product positioning, cycling domain)</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Method</span>
+      <span class="meta-value">Iterative design, market research, AI-assisted build</span>
+    </div>
+  </section>
+
+  <section class="feature-image container">
+    <figure class="feature-card">
+      <video autoplay loop muted playsinline poster="/images/steady-hero-poster.png">
+        <source src="/videos/steady-hero.mp4" type="video/mp4" />
+      </video>
+    </figure>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">01</span>
+        <h2>Overview</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">Steady is an AI cycling coaching app for serious cyclists. It builds science-based training plans, reviews every ride, and adapts every week. The way a human coach would.</p>
+        <p>It was born out of frustration: training apps too opaque, human coaching too expensive. The product positioning came from a pilot my co-founder ran, coaching 3 strangers through WhatsApp and a custom GPT. We learned that cyclists wanted structured plans that explained the <em>why</em>, and that AI could generate those plans responsibly when a human who knows training science oversees it.</p>
+        <p>Once the app MVP had a direction, I designed and built the marketing site (along with the app). The goal at the beginning was to collect waitlist emails, then it became the landing page for new users. Through the process, we sharpened our positioning and how we communicated the product.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">02</span>
+        <h2>Design direction</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">Most cycling and fitness apps are loud. Neon accents, graphs everywhere, numbers that manufacture a feeling of progress.</p>
+        <p>Steady's users are serious cyclists who want clarity, not a dashboard. The visual language needed to feel like a coach speaking clearly and explaining the "why" of each workout. The look and feel uses softer blues and violets, and the UI lets coaching text shine over charts. The app and the site share that direction.</p>
+      </div>
+    </div>
+
+    <div class="takeaways-columns">
+      <div>
+        <h3 class="sub-heading">Calm over loud</h3>
+        <p>The brand should feel calm and confident, highlighting the coaching and consistent progress.</p>
+      </div>
+      <div>
+        <h3 class="sub-heading">Lead with what's different</h3>
+        <p>Communicate the two core product decisions: plans are science-based, not LLM-generated, and the coaching loop is high-touch.</p>
+      </div>
+      <div>
+        <h3 class="sub-heading">Animate what matters</h3>
+        <p>Use motion selectively to draw attention to the things we most want users to understand — and give a feel of the app.</p>
+      </div>
+    </div>
+
+    <div class="bento bento--two">
+      <figure class="bento-item">
+        <img src="/images/Steady-DS-App.png" alt="Steady's calm visual treatment" />
+        <figcaption>Steady's UI — coaching text leads, charts stay supporting.</figcaption>
+      </figure>
+      <figure class="bento-item">
+        <img src="/images/Steady-DS-Competition.png" alt="Competitor app visual density" />
+        <figcaption>Competitor fitness apps — dense graphs and numbers everywhere.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">03</span>
+        <h2>Getting clear on positioning</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">The first version of the site led with <strong>plan generation</strong> as the main differentiator — the science, the periodization, the gap analysis.</p>
+        <p>During pricing research, two findings changed the hierarchy. First, many AI-based training apps already generate plans — that alone isn't a differentiator. Second, platforms like TrainingPeaks price around coaching <em>touch frequency</em>: the more you interact with your coach, the higher the tier, and prices climb fast.</p>
+        <p>We restructured the site to lead with the coaching loop. Plan generation moved to a supporting credibility section, alongside the training science — since most AI apps in this space are LLM wrappers rather than deterministic, research-backed plans.</p>
+      </div>
+    </div>
+
+    <div class="positioning-card">
+      <p class="eyebrow"><span class="dot"></span> Clear positioning</p>
+      <h3 class="positioning-title">An alternative to a human cycling coach</h3>
+      <div class="concept-pager concept-pager--in-card">
+        <div class="concept-pager-stage">
+          <button class="concept-pager-arrow concept-pager-arrow--prev" aria-label="Previous slide">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="10 3 5 8 10 13"/></svg>
+          </button>
+          <figure class="concept-pager-image is-active" data-slide="1">
+            <img src="/images/Steady-Positioning-1.png" alt="Steady positioning — slide 1" />
+          </figure>
+          <figure class="concept-pager-image" data-slide="2">
+            <img src="/images/Steady-Positioning-2.png" alt="Steady positioning — slide 2" />
+          </figure>
+          <figure class="concept-pager-image" data-slide="3">
+            <img src="/images/Steady-Positioning-3.png" alt="Steady positioning — slide 3" />
+          </figure>
+          <button class="concept-pager-arrow concept-pager-arrow--next" aria-label="Next slide">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 3 11 8 6 13"/></svg>
+          </button>
+        </div>
+        <div class="concept-pager-dots">
+          <button class="concept-pager-dot is-active" data-target="1" aria-label="Show slide 1"></button>
+          <button class="concept-pager-dot" data-target="2" aria-label="Show slide 2"></button>
+          <button class="concept-pager-dot" data-target="3" aria-label="Show slide 3"></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-statement">
+      <span class="index">The insight</span>
+      <p class="pull-quote">"Steady's differentiator isn't that it generates a plan. It's that it coaches you through the plan."</p>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">04</span>
+        <h2>Building with AI</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">AI wasn't one tool — it was a partner across content, visual design, and frontend build. Three themes stand out.</p>
+      </div>
+    </div>
+
+    <div class="story-grid story-grid--findings">
+      <aside class="story-label">
+        <span class="index">Content &amp; copy</span>
+      </aside>
+      <div class="story-body">
+        <p>I iterated with Claude, ChatGPT, and Gemini across many rounds. The coaching-first hierarchy came from market research done partly with AI, partly through our own desk research.</p>
+        <p>I was also able to build a full knowledge base in 2 days with the help of Claude Code because it also had access to the app and how it worked.</p>
+      </div>
+    </div>
+
+    <div class="story-grid story-grid--findings">
+      <aside class="story-label">
+        <span class="index">Visual &amp; logo</span>
+      </aside>
+      <div class="story-body">
+        <p><strong>The Figma ↔ Claude loop.</strong> Start in Figma, use Claude via the Figma MCP for exploration, pull options back into Figma to refine within my own system. AI generates options; the designer's job is having a point of view — without one, the output stays generic.</p>
+        <p><strong>Logo.</strong> Built entirely in Claude Code through iterations. This wouldn't have existed without AI — brand design wasn't in my skill set.</p>
+      </div>
+    </div>
+
+    <div class="story-grid story-grid--findings">
+      <aside class="story-label">
+        <span class="index">Animation &amp; build</span>
+      </aside>
+      <div class="story-body">
+        <p><strong>The biggest unlock was being able to add animations</strong> to the site with a small learning curve. The first site was fully static. Working with Claude Code, I added animations to the moments we wanted readers to stop on — the hero cycling through three goal types, the coaching loop walkthrough. In PostHog, I could see users pausing at those sections and engaging with the content.</p>
+      </div>
+    </div>
+
+    <figure class="wide-figure">
+      <video autoplay loop muted playsinline>
+        <source src="/videos/steady-coach-chat-animation.mp4" type="video/mp4" />
+      </video>
+      <figcaption>The coach chat animation — one of the most watched moments in PostHog.</figcaption>
+    </figure>
+
+    <figure class="wide-figure">
+      <video autoplay loop muted playsinline>
+        <source src="/videos/steady-onboarding-animation.mp4" type="video/mp4" />
+      </video>
+      <figcaption>The onboarding animation — one of the moments users stopped on in PostHog.</figcaption>
+    </figure>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">05</span>
+        <h2>Key takeaways &amp; learnings</h2>
+      </aside>
+      <div class="story-body">
+        <div class="learning-grid">
+          <article>
+            <h4>AI as a skill unlocker</h4>
+            <p>AI gave me capabilities I didn't have, such as brand design, animation, and front-end code. For a founding designer working without a team, this changes what's possible. However, we still need to give clear direction, create boundaries, and know exactly how the end product should look and function.</p>
+          </article>
+          <article>
+            <h4>AI as a thinking partner</h4>
+            <p>AI can be a huge creativity booster and mind opener in product development. The best results came when I was able to work with the various tools as if they are a partner in building together. For example, using the Figma MCP in a two-way design jam made it faster to reach better results. Again, the caveat is that the design is ultimately made by the designer.</p>
+          </article>
+          <article>
+            <h4>Content decisions are product decisions</h4>
+            <p>Restructuring the site around the coaching loop wasn't a copywriting exercise. It was a product positioning decision that came from competitive research and shaped everything downstream, including the comparison table and the pricing framing.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</CaseStudy>

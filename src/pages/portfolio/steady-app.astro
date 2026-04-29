@@ -1,0 +1,284 @@
+---
+import CaseStudy from '../../layouts/CaseStudy.astro';
+---
+<CaseStudy
+  title="Building a cycling coaching app from zero — Cansu Tecimer"
+  description="Designing and building Steady, an AI cycling coaching app — a coaching surface that feels like a coach, not a dashboard."
+  nextProject={{
+    title: "Building Steady's marketing site",
+    url: "/portfolio/steady-marketing-site/"
+  }}
+>
+
+  <section class="hero container">
+    <a href="/work/" class="back-link">← All projects</a>
+    <p class="eyebrow"><span class="dot"></span> Case study · Steady</p>
+    <h1 class="display">Building a <em>cycling coaching app</em> from zero.</h1>
+    <p class="lede">
+      Designing and building Steady — an AI cycling coaching app — from idea to product with users, in a two-person team.
+    </p>
+  </section>
+
+  <section class="meta-strip container">
+    <div class="meta-item">
+      <span class="meta-label">Duration</span>
+      <span class="meta-value">January – April 2026</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Role</span>
+      <span class="meta-value">Product design (IA, UX, UI), front-end build with Claude Code</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Team</span>
+      <span class="meta-value">Me, my co-founder</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Method</span>
+      <span class="meta-value">Iterative design, AI-assisted build, PostHog-led learning</span>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">01</span>
+        <h2>Overview</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">Steady is an AI cycling coaching app for serious cyclists. It builds science-based training plans, reviews every ride, and adapts every week. I co-founded it with my husband — he built the backend, training logic, and cycling science. I designed and built the full product experience.</p>
+        <p>The product positioning for Steady is that it is a coaching product. The reference point for messaging and pricing is a human cycling coach, not other training apps. The app was designed to feel like a coach, rather than a training plan and a dashboard — coaching text over raw numbers, explanations over an overwhelm of data. Calm tones, minimal data, and a UI that lets the coaching text stand out.</p>
+        <p>We started with a web app to ship faster and get to real user feedback quickly. A native app will follow once we've learned enough from early usage.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">02</span>
+        <h2>App structure</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">The app is made up of four main pages — today, schedule, overview of training block, and progress — and a persistent chat as the main coaching surface.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="hifi-strip">
+    <div class="hifi-inner">
+      <p class="eyebrow"><span class="dot"></span> The four sections</p>
+      <div class="hifi-row">
+        <figure class="hifi-item">
+          <img src="/images/Steady-App-Mobile-Today.png" alt="Today screen" />
+          <figcaption>Today — today's workout and weekly snapshot</figcaption>
+        </figure>
+        <figure class="hifi-item">
+          <img src="/images/Steady-App-Mobile-Schedule.png" alt="Schedule screen" />
+          <figcaption>Schedule — weekly view with coach feedback post ride</figcaption>
+        </figure>
+        <figure class="hifi-item">
+          <img src="/images/Steady-App-Mobile-PlanBlock.png" alt="Plan block (Overview) screen" />
+          <figcaption>Overview — based on Stephen Seiler's block periodization</figcaption>
+        </figure>
+        <figure class="hifi-item">
+          <img src="/images/Steady-App-Mobile-Progress.png" alt="Progress screen" />
+          <figcaption>Progress — coaching narrative and dimension tracking</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">03</span>
+        <h2>Chat as the coaching surface</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">The chat is the primary surface for a 2-way conversation, so it is key to the "coaching" aspect of the app.</p>
+        <ul class="findings-list">
+          <li><strong>Workout &amp; weekly reviews.</strong> Coach initiated reviews after every synced ride and at the end of each week (and training block). These are the core engagement loop.</li>
+          <li><strong>Plan adjustments.</strong> User initiated adjustments to the plan, such as "I'm sick today." "There's a sportive on Sunday." The coach responds with modifications and explains why.</li>
+          <li><strong>Training questions.</strong> User initiated questions that the "coach" can answer based on everything the AI knows about training science and the user's individual goal, training plan, metrics, etc.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="hifi-strip">
+    <div class="hifi-inner">
+      <p class="eyebrow"><span class="dot"></span> Chat use cases</p>
+      <div class="hifi-row">
+        <figure class="hifi-item">
+          <img src="/images/Steady-App-Coach-Review.png" alt="Workout review" />
+          <figcaption>Workout review</figcaption>
+        </figure>
+        <figure class="hifi-item">
+          <img src="/images/Steady-App-Coach-Review2.png" alt="Workout review" />
+          <figcaption>Workout review</figcaption>
+        </figure>
+        <figure class="hifi-item">
+          <img src="/images/Steady-App-Coach-Plan-Adjustment.png" alt="Plan adjustment" />
+          <figcaption>Plan adjustment</figcaption>
+        </figure>
+        <figure class="hifi-item">
+          <img src="/images/Steady-App-Coach-Questions.png" alt="Training questions" />
+          <figcaption>Training questions</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="story container">
+    <figure class="wide-figure">
+      <video autoplay muted playsinline data-loop-delay="5000">
+        <source src="/videos/steady-coach-ride-review.mp4" type="video/mp4" />
+      </video>
+      <figcaption>The coach delivers a ride review after a synced ride.</figcaption>
+    </figure>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">04</span>
+        <h2>Layout change: from three columns to floating chat</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">The initial desktop layout had chat permanently open on the right. We moved away from this for two main reasons.</p>
+        <p><strong>1. A persistent panel doesn't work well as a notification system.</strong> The coach needs to <em>initiate</em> conversations (e.g., "How did that ride feel?"), which doesn't work if the chat is always visible.</p>
+        <p><strong>2. An always-open chat invites overuse,</strong> which is costly in AI usage and not necessarily better for the user.</p>
+      </div>
+    </div>
+
+    <div class="gallery-two">
+      <figure>
+        <a class="zoomable" href="/images/Steady-App-Layout-Old.png" target="_blank" rel="noopener" aria-label="Open original three-column layout in new tab">
+          <img src="/images/Steady-App-Layout-Old.png" alt="Original three-column layout with persistent chat panel" />
+        </a>
+        <figcaption>Before — three columns with a persistent chat panel.</figcaption>
+      </figure>
+      <figure>
+        <a class="zoomable" href="/images/Steady-App-Layout-New.png" target="_blank" rel="noopener" aria-label="Open current floating-chat layout in new tab">
+          <img src="/images/Steady-App-Layout-New.png" alt="Current layout with a floating chat button" />
+        </a>
+        <figcaption>After — main view, with chat as a floating button the coach can open.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">05</span>
+        <h2>Progress in a slow-moving product</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">The progress page answers "How am I doing?" and "Am I on track?" Steady determines the metrics that matter for a user's specific goal, calculates where they are physiologically, and sets target numbers. Then we generate a targeted plan to help the user close that gap.</p>
+        <p>The underlying metrics move slowly, sometimes not visibly for weeks. Designing for this without manufacturing false momentum was a hard problem to solve, and one we're still iterating on.</p>
+      </div>
+    </div>
+
+    <div class="story-grid story-grid--findings">
+      <aside class="story-label">
+        <span class="index">What we tried and discarded</span>
+      </aside>
+      <div class="story-body">
+        <p>We tried several approaches: readiness scores, gap-closed percentages, estimated weeks to close, and starting every metric at zero. Each one looked good in a mockup but would eventually mislead the user, either by creating false confidence, ignoring real physiology, or eroding trust with inaccurate estimates.</p>
+      </div>
+    </div>
+
+    <section class="feature-image">
+      <div class="feature-card feature-card--row feature-card--row-three">
+        <figure class="feature-card-cell">
+          <img src="/images/Steady-App-Progress%20-%20v1%20-%201.png" alt="Readiness score — false certainty" />
+          <figcaption>Readiness score — false certainty. Made users look closer to ready than they were.</figcaption>
+        </figure>
+        <figure class="feature-card-cell">
+          <img src="/images/Steady-App-Progress%20-%20v1%20-%202.png" alt="Gap-closed bars — 83% sounds close" />
+          <figcaption>Gap-closed bars — 83% sounds close. It could take months.</figcaption>
+        </figure>
+        <figure class="feature-card-cell">
+          <img src="/images/Steady-App-Progress%20-%20v1%20-%203.png" alt="Weeks to close — too many variables" />
+          <figcaption>Weeks to close — too many variables. A wrong estimate erodes trust faster than no estimate.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <div class="story-grid story-grid--findings">
+      <aside class="story-label">
+        <span class="index">Where we landed</span>
+      </aside>
+      <div class="story-body">
+        <p>The coaching narrative is the main way users will understand how they are doing. As any good coaching relationship would, it is nuanced and explains where the user is.</p>
+        <p>For some quick understanding, we decided to show a quick snapshot and then just go with trend graphs even if they move slowly. (Building these graphs with real data also made me appreciate the details and edge cases involved — from calculating data to making decisions on what happens when data doesn't exist or only partially exists.)</p>
+        <p>We added <strong>weekly training load (TSS)</strong> because it moves every week — giving users a sense of momentum even when the physiological metrics haven't budged.</p>
+      </div>
+    </div>
+
+    <section class="feature-image">
+      <div class="feature-card feature-card--row feature-card--row-three">
+        <figure class="feature-card-cell">
+          <img src="/images/Steady-App-Mobile-Progress-1.png" alt="Progress — coaching narrative" />
+          <figcaption>Coaching text</figcaption>
+        </figure>
+        <figure class="feature-card-cell">
+          <img src="/images/Steady-App-Mobile-Progress-2.png" alt="Progress — dimensions, quick facts and trends" />
+          <figcaption>Dimensions — quick facts and trends</figcaption>
+        </figure>
+        <figure class="feature-card-cell">
+          <img src="/images/Steady-App-Mobile-Progress-3.png" alt="Progress — weekly load" />
+          <figcaption>Weekly load</figcaption>
+        </figure>
+      </div>
+    </section>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">06</span>
+        <h2>What we've learned from real users</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">We use PostHog to track early usage. It shows us over time where we have bugs and where we need to add capabilities.</p>
+        <ul class="findings-list">
+          <li><strong>FTP is personal.</strong> Users want to override it and see the consequences in their plan. We made it manually adjustable.</li>
+          <li><strong>Plans change.</strong> Users want recurring adjustments ("Sundays are always group rides") without breaking training logic. We need to allow long-term preferences while still guarding against overtraining.</li>
+          <li><strong>Reviews are engaging.</strong> Asking "how did it feel?" before delivering the review — rather than just pushing it immediately — made the feedback better and created a two-way conversation. Users are willing to share more than we expected.</li>
+          <li><strong>AI makes common-sense mistakes.</strong> Things a human would never get wrong. When asked to change a workout, it changed <em>this</em> Monday (two days ago) instead of <em>next</em> Monday because it has no concept of time. Watching PostHog helped us catch and fix bugs like this quickly.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">07</span>
+        <h2>Key takeaways &amp; learnings</h2>
+      </aside>
+      <div class="story-body">
+        <div class="learning-grid">
+          <article>
+            <h4>Honest data over impressive data</h4>
+            <p>It's tempting to show readiness scores and closing percentages — users want certainty. But in coaching, things are more nuanced than a number can capture. We resisted the impulse to simplify and let the coaching voice do the work a single metric can't.</p>
+          </article>
+          <article>
+            <h4>Building what you design changes how you design</h4>
+            <p>Working in code with real data surfaces thinking that doesn't exist in prototypes. How trends are calculated, what happens with a single data point, how to display power zones in a repeatable way. It takes more time to handle every edge case, but the loop from idea to shipped result is hours, not sprints.</p>
+          </article>
+          <article>
+            <h4>Building from zero is a lot of fun</h4>
+            <p>After years of design leadership roles within existing products and organizations, building something from scratch (especially enabled by new tools) was the most fun I've had recently. A lot of things that slow progress are cut out of the loop and the focus is on problem solving.</p>
+          </article>
+          <article>
+            <h4>AI builds fast — including technical debt</h4>
+            <p>When the backend was built with Claude Code without strict architectural constraints, we accumulated tech debt very quickly. AI doesn't proactively do systems thinking — componentization, data architecture, domain-driven design. Building <em>well</em> with AI still requires discipline.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</CaseStudy>

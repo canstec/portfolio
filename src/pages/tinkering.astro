@@ -1,0 +1,113 @@
+---
+import CaseStudy from '../layouts/CaseStudy.astro';
+
+const FEED_URL = 'https://designersnotebook.substack.com/feed';
+
+type Post = {
+  title: string;
+  link: string;
+  date: Date;
+  excerpt: string;
+};
+
+function decodeEntities(s: string): string {
+  return s
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&apos;/g, "'")
+    .replace(/&#8217;/g, '’')
+    .replace(/&#8216;/g, '‘')
+    .replace(/&#8220;/g, '“')
+    .replace(/&#8221;/g, '”')
+    .replace(/&#8212;/g, '—')
+    .replace(/&nbsp;/g, ' ');
+}
+
+function stripCData(s: string): string {
+  return s.replace(/^\s*<!\[CDATA\[/, '').replace(/\]\]>\s*$/, '').trim();
+}
+
+function stripTags(s: string): string {
+  return s.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+}
+
+function pick(xml: string, tag: string): string {
+  const re = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, 'i');
+  const m = xml.match(re);
+  return m ? stripCData(m[1]) : '';
+}
+
+function truncate(s: string, n: number): string {
+  if (s.length <= n) return s;
+  const cut = s.slice(0, n);
+  const lastSpace = cut.lastIndexOf(' ');
+  return (lastSpace > 0 ? cut.slice(0, lastSpace) : cut) + '…';
+}
+
+async function loadPosts(): Promise<Post[]> {
+  try {
+    const res = await fetch(FEED_URL, {
+      headers: { 'User-Agent': 'cansutecimer.com/rss-fetch' },
+    });
+    if (!res.ok) return [];
+    const xml = await res.text();
+    const items = [...xml.matchAll(/<item[^>]*>([\s\S]*?)<\/item>/g)].map((m) => m[1]);
+    return items.map((block) => {
+      const title = decodeEntities(pick(block, 'title'));
+      const link = stripTags(pick(block, 'link'));
+      const pubDate = pick(block, 'pubDate');
+      const description = pick(block, 'description');
+      const excerpt = truncate(decodeEntities(stripTags(description)), 220);
+      return {
+        title,
+        link,
+        date: pubDate ? new Date(pubDate) : new Date(0),
+        excerpt,
+      };
+    });
+  } catch {
+    return [];
+  }
+}
+
+const posts = await loadPosts();
+
+const dateFormatter = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+<CaseStudy
+  title="Tinkering — Cansu Tecimer"
+  description="Writing and experiments from Cansu Tecimer, syndicated from Designer's Notebook."
+>
+
+  <section class="hero container">
+    <p class="eyebrow"><span class="dot"></span> Tinkering</p>
+    <h1 class="display">Designer's <em>Notebook</em>.</h1>
+    <p class="lede">
+      Occasional writing on design, building products, and the work of leading teams. Posts are pulled from my <a href="https://designersnotebook.substack.com/" class="contact-link" target="_blank" rel="noopener">Substack</a>.
+    </p>
+  </section>
+
+  <section class="story story--tight container">
+    <div class="posts-list">
+      {posts.length === 0 && (
+        <p class="posts-empty">No posts yet — check back soon, or visit the Substack directly.</p>
+      )}
+      {posts.map((post) => (
+        <a href={post.link} class="post-card" target="_blank" rel="noopener">
+          <span class="post-date">{dateFormatter.format(post.date)}</span>
+          <h2 class="post-title">{post.title}</h2>
+          {post.excerpt && <p class="post-excerpt">{post.excerpt}</p>}
+          <span class="post-link">Read on Substack →</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+</CaseStudy>

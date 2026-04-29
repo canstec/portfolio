@@ -1,0 +1,61 @@
+---
+import CaseStudy from '../layouts/CaseStudy.astro';
+
+const projects = [
+  {
+    href: '/portfolio/steady-app/',
+    eyebrow: 'Steady · 2026',
+    title: 'Building a cycling coaching app from zero',
+    description: 'Designing and building Steady — an AI cycling coaching app — from idea to product with users, in a two-person team.',
+  },
+  {
+    href: '/portfolio/steady-marketing-site/',
+    eyebrow: 'Steady · 2026',
+    title: "Building Steady's marketing site",
+    description: 'Brand, content, and AI-assisted build for an AI cycling coaching app.',
+  },
+  {
+    href: '/portfolio/homepage-design-for-returning-users/',
+    eyebrow: 'GetYourGuide · 2023',
+    title: 'Homepage design for returning users',
+    description: 'A six-month direction, executive buy-in and homepage design for repeat visitors.',
+  },
+  {
+    href: '/portfolio/vision-for-holistic-discovery-experience/',
+    eyebrow: 'GetYourGuide · 2022–2023',
+    title: 'Vision for a holistic discovery experience',
+    description: 'Long-term product vision for travel discovery, grounded in research and concept testing.',
+  },
+  {
+    href: '/portfolio/improving-destination-discovery/',
+    eyebrow: 'GetYourGuide · 2020–2021',
+    title: 'Improving destination discovery',
+    description: 'Continuous A/B testing to open destination discovery to a new user intent. Bonus difficulty: COVID traffic.',
+  },
+  {
+    href: '/portfolio/hellofresh-my-menu/',
+    eyebrow: 'HelloFresh · 2017–2018',
+    title: 'HelloFresh My Menu 2.0',
+    description: 'Redesigning the area where customers manage recurring deliveries — research, prototypes, A/B test results, and the limits of what the experiment told us.',
+  },
+];
+---
+<CaseStudy title="Work — Cansu Tecimer" description="Selected projects by Cansu Tecimer.">
+  <section class="hero container">
+    <h1 class="display">Selected <em>work</em>.</h1>
+    <p class="lede">Glad you're here 👋 Some selected projects from the last decade or so.</p>
+  </section>
+
+  <section class="story story--tight container">
+    <div class="project-grid">
+      {projects.map((p) => (
+        <a class="project-card" href={p.href}>
+          <span class="project-card-eyebrow">{p.eyebrow}</span>
+          <h2 class="project-card-title">{p.title}</h2>
+          <p class="project-card-description">{p.description}</p>
+          <span class="project-card-cta">Read case study →</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</CaseStudy>

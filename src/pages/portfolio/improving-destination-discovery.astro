@@ -1,0 +1,320 @@
+---
+import CaseStudy from '../../layouts/CaseStudy.astro';
+---
+<CaseStudy
+  title="Improving destination discovery — Cansu Tecimer"
+  description="A case study on iterating GetYourGuide's city discovery pages — concept testing, five experiments, and the solution that finally moved the needle."
+  nextProject={{
+    title: "Vision for a holistic discovery experience",
+    url: "/portfolio/vision-for-holistic-discovery-experience/"
+  }}
+>
+
+  <section class="hero container">
+    <a href="/work/" class="back-link">← All projects</a>
+    <p class="eyebrow"><span class="dot"></span> Case study · GetYourGuide</p>
+    <h1 class="display">Improving <em>destination</em> discovery.</h1>
+    <p class="lede">
+      Helping travelers in the research phase of planning a trip — from an initial concept that failed in A/B testing to an iterative, research-driven solution that finally moved every success metric.
+    </p>
+  </section>
+
+  <section class="meta-strip container">
+    <div class="meta-item">
+      <span class="meta-label">Duration</span>
+      <span class="meta-value">July 2020 — May 2021</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Company</span>
+      <span class="meta-value">GetYourGuide</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Team</span>
+      <span class="meta-value">UX manager (me), UX research, Product &amp; content design</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Method</span>
+      <span class="meta-value">Concept testing, iterative experimentation</span>
+    </div>
+  </section>
+
+  <section class="feature-image container">
+    <figure class="feature-card feature-card--row">
+      <img src="/images/DD-exp6-screen-1.png" alt="Final design — screen 1" />
+      <img src="/images/DD-exp6-screen-2.png" alt="Final design — screen 2" />
+      <img src="/images/DD-exp6-screen-3.png" alt="Final design — screen 3" />
+      <img src="/images/DD-exp6-screen-4.png" alt="Final design — screen 4" />
+    </figure>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">01</span>
+        <h2>Overview</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">GetYourGuide is one of the world's largest travel-experience marketplaces, connecting travelers with activities run by local operators. Its mission is to "give the world access to unforgettable travel experiences".</p>
+        <p>While it was very successful at capturing high-intent users from search engines, the performance earlier in the traveler journey was poor. In mid 2020, we kicked off a project to <strong>improve the product for travelers who knew their destination but not yet their itinerary of activities</strong>. This would allow us to play a bigger part in the travel planning space.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">02</span>
+        <h2>Understanding our users</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">GetYourGuide's target audience is the <strong>"Modern Explorer"</strong>.</p>
+        <p>A traveler who goes on vacation frequently (4–6 times a year) to experience new cultures. Travel is part of their identity; they take pride in it as a hobby. They want both the tourist spots and the off-the-beaten-path.</p>
+        <p>Based on visitor data, we identified three levels of intent.</p>
+      </div>
+    </div>
+
+    <div class="intent-grid">
+      <header class="segment-header">
+        <span class="segment-tag">High intent</span>
+        <h3>High-intent customer</h3>
+        <p>Travelers who have already decided on the experiences they want to do. Most likely have booked their flights and hotel.</p>
+      </header>
+
+      <header class="segment-header">
+        <span class="segment-tag">Mid intent</span>
+        <h3>Mid-intent customer</h3>
+        <p>Travelers who know their destination but are still researching experiences they want to do. Most likely have booked their flights and hotel.</p>
+      </header>
+
+      <header class="segment-header">
+        <span class="segment-tag">Low intent</span>
+        <h3>Low-intent customer</h3>
+        <p>Travelers who are still deciding on their destination. No flights or hotels have been booked.</p>
+      </header>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">03</span>
+        <h2>Main customer problems</h2>
+      </aside>
+      <div class="story-body">
+        <ol class="numbered-list">
+          <li><span>When landing on our website, users didn't get a good understanding of <strong>how to experience a city.</strong></span></li>
+          <li><span>Users found it difficult to <strong>scan and understand</strong> the activities on offer.</span></li>
+          <li><span>There was no easy way to conveniently <strong>narrow down choices</strong> based on their needs and preferences.</span></li>
+        </ol>
+      </div>
+    </div>
+
+    <figure class="wide-figure">
+      <img src="/images/DD-original-city-page.png" alt="Screenshot of the GetYourGuide city page at the start of the project" />
+      <figcaption>City landing pages at the start of the project</figcaption>
+    </figure>
+
+    <div class="problem-statement">
+      <span class="index">Problem statement</span>
+      <p class="pull-quote">"Help mid-intent customers understand what makes their destination special, and discover experiences that match their interest and needs."</p>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">04</span>
+        <h2>Concept design &amp; testing</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">Many solution ideas were floating around the company. The main challenge was synthesizing organizational knowledge and customer data into a cohesive first concept — both to align scope internally and to get direction-level feedback from users.</p>
+      </div>
+    </div>
+
+    <div class="concept-pager">
+      <div class="concept-pager-stage">
+        <button class="concept-pager-arrow concept-pager-arrow--prev" aria-label="Previous slide">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="10 3 5 8 10 13"/></svg>
+        </button>
+        <figure class="concept-pager-image is-active" data-slide="1">
+          <img src="/images/DD-concept-explorations.png" alt="Concept design — early explorations" />
+        </figure>
+        <figure class="concept-pager-image" data-slide="2">
+          <img src="/images/DD-concept-wireframe.png" alt="Concept design — wireframe" />
+        </figure>
+        <figure class="concept-pager-image" data-slide="3">
+          <img src="/images/DD-concept-RITE.png" alt="Concept design — RITE study" />
+        </figure>
+        <button class="concept-pager-arrow concept-pager-arrow--next" aria-label="Next slide">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 3 11 8 6 13"/></svg>
+        </button>
+      </div>
+      <div class="concept-pager-dots">
+        <button class="concept-pager-dot is-active" data-target="1" aria-label="Show slide 1"></button>
+        <button class="concept-pager-dot" data-target="2" aria-label="Show slide 2"></button>
+        <button class="concept-pager-dot" data-target="3" aria-label="Show slide 3"></button>
+      </div>
+    </div>
+
+    <div class="split-cols">
+      <div>
+        <h3 class="sub-heading">Ideas to be tested</h3>
+        <p>We built a cohesive first concept that combined three ideas: a short city intro with key information, top sights to anchor travelers to a destination, and interest-based collections to help narrow down choices.</p>
+        <p>Methodology for the testing was a RITE study.</p>
+      </div>
+      <div>
+        <h3 class="sub-heading">My role</h3>
+        <p>I worked with the UX team to define scope and support communication. I focused on craft, gave feedback on design options, and co-designed solutions when the team got stuck. My feedback emphasized information architecture and content over interaction complexity, and making sure activities remained prominent.</p>
+      </div>
+      <div>
+        <h3 class="sub-heading">Key findings</h3>
+        <ul class="dash-list">
+          <li><span>Top sights &amp; collections together helped users understand a destination and help them narrow experiences.</span></li>
+          <li><span>The components helped users understand our value proposition as a travel companion.</span></li>
+          <li><span>We saw 2 mindsets regarding information — those who wanted to explore activities with additional content &amp; those who wanted <em>in-depth</em> information.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="hifi-strip">
+    <div class="hifi-inner">
+      <p class="eyebrow"><span class="dot"></span> Experiment 01 — initial design</p>
+      <div class="hifi-row">
+        <figure class="hifi-item"><img src="/images/DD-exp1-screen-1.png" alt="Experiment 1 — city intro and page navigation" /></figure>
+        <figure class="hifi-item"><img src="/images/DD-exp1-screen-2.png" alt="Experiment 1 — top sights module" /></figure>
+        <figure class="hifi-item"><img src="/images/DD-exp1-screen-3.png" alt="Experiment 1 — curated collections" /></figure>
+        <figure class="hifi-item"><img src="/images/DD-exp1-screen-4.png" alt="Experiment 1 — full activity list" /></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">05</span>
+        <h2>Initial A/B experiment</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">The first A/B test kept most of the components from the concept prototypes — a city intro, top sights, and curated collections — with minor adjustments for page navigation and technical feasibility.</p>
+        <p>We launched in <strong>26 cities</strong> with curated collections. The experiment ran for <strong>21 days</strong> at the end of 2020.</p>
+        <p>Unfortunately, the success metrics went the wrong direction — a <strong>10.5% drop in quoter rate</strong> (visitors clicking an activity) and <strong>17% increase in bounce rate</strong>.</p>
+      </div>
+    </div>
+
+    <div class="story-grid story-grid--findings">
+      <aside class="story-label">
+        <span class="index">Takeaways</span>
+      </aside>
+      <div class="story-body">
+        <ol class="numbered-list">
+          <li><span>We tested <strong>too many competing hypotheses</strong> at once. With negative metric impact, it was hard to learn what specifically caused the regression.</span></li>
+          <li><span>Moving activities too far down the page created <strong>confusion and mismatched expectations</strong> for a lot of visitors who came expecting a bookable marketplace.</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">06</span>
+        <h2>Iterations</h2>
+      </aside>
+      <div class="story-body">
+        <p class="first-para">Over the next 4 months, the team launched <strong>5 experiments</strong>, to isolate hypotheses and learn from experiments.</p>
+        <p>The biggest challenge was iterating on a highly optimized part of the product while data volumes were suppressed by COVID-19. My role during this time was to help define success and clear hypotheses, and keep motivation up and feedback cycles rapid.</p>
+      </div>
+    </div>
+
+    <figure class="wide-figure">
+      <img src="/images/DD-iterations-timeline.png" alt="Timeline showing the five iterative experiments across four months" />
+    </figure>
+
+    <div class="learning-grid learning-grid--flat">
+      <article>
+        <h4>#1 Moving activities up the page</h4>
+        <p>Pushing bookable activities down was causing confusion around our value proposition. We pulled the activity list back toward the top of the page.</p>
+      </article>
+      <article>
+        <h4>#2 Improving the collections</h4>
+        <p>Grouping activities within collections was key to helping people navigate a city. We iterated across multiple cycles — including a "top activities" collection and hand-picking collections for test cities.</p>
+      </article>
+      <article>
+        <h4>#3 Improving the "top sights" module</h4>
+        <p>Travelers anchored themselves through the top sights in a destination. We improved this module and placed it near the top so it was one of the first things users saw.</p>
+      </article>
+      <article>
+        <h4>#4 Interaction &amp; visual design</h4>
+        <p>By the 6th iteration, a mobile-focused usability study drove UI changes to collections and a quick category-filter navigation that made scanning much easier.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="feature-image container">
+    <figure class="feature-card feature-card--titled">
+      <p class="eyebrow"><span class="dot"></span> Final design — Experiment 06</p>
+      <div class="feature-card-row">
+        <img src="/images/DD-exp6-screen-1.png" alt="Final design — screen 1" />
+        <img src="/images/DD-exp6-screen-2.png" alt="Final design — screen 2" />
+        <img src="/images/DD-exp6-screen-3.png" alt="Final design — screen 3" />
+        <img src="/images/DD-exp6-screen-4.png" alt="Final design — screen 4" />
+      </div>
+    </figure>
+  </section>
+
+  <section class="results">
+    <div class="container">
+      <p class="eyebrow"><span class="dot"></span> Experiment 06 Results</p>
+      <h2 class="section-title">All success metrics in the green.</h2>
+
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-num">−3.3%</span>
+          <p>drop in <em>Bounce Rate</em> — fewer visitors leaving without interacting.</p>
+        </div>
+        <div class="stat">
+          <span class="stat-num">+3.6%</span>
+          <p>uplift in <em>Quoter Rate</em> — more visitors clicking through to an activity.</p>
+        </div>
+        <div class="stat">
+          <span class="stat-num">+3.14%</span>
+          <p>uplift in <em>Check Availability Rate</em> — more visitors searching real dates on an activity.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="story container">
+    <div class="story-grid">
+      <aside class="story-label">
+        <span class="index">07</span>
+        <h2>Key takeaways</h2>
+      </aside>
+      <div class="story-body">
+        <div class="takeaways-columns">
+          <div>
+            <h3 class="sub-heading">Ways of working</h3>
+            <ol class="numbered-list">
+              <li><span>The best approach is a general direction with guiding principles, then testing small hypotheses one at a time.</span></li>
+              <li><span>We only learn from failure if we go into each experiment with clear rationale and intentionality.</span></li>
+            </ol>
+          </div>
+          <div>
+            <h3 class="sub-heading">Attitude</h3>
+            <ol class="numbered-list">
+              <li><span>Perseverance is the multiplier. In an unknown space there will be failure — but when teams have conviction grounded in research, the work feels meaningful enough to push through.</span></li>
+            </ol>
+          </div>
+          <div>
+            <h3 class="sub-heading">Leadership</h3>
+            <ol class="numbered-list">
+              <li><span>As managers, we play different roles depending on what the team needs. Balancing those modes takes trust and swapping tools based on the type of problem.</span></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</CaseStudy>
