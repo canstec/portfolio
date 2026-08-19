@@ -49,8 +49,14 @@ function truncate(s: string, n: number): string {
 
 async function loadPosts(): Promise<Post[]> {
   try {
-    const res = await fetch(FEED_URL, {
-      headers: { 'User-Agent': 'cansutecimer.com/rss-fetch' },
+    // Cache-bust: Substack sits behind Cloudflare, and a cached feed at build
+    // time silently publishes a stale post list.
+    const res = await fetch(`${FEED_URL}?cb=${Date.now()}`, {
+      headers: {
+        'User-Agent': 'cansutecimer.com/rss-fetch',
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+      },
     });
     if (!res.ok) return [];
     const xml = await res.text();
