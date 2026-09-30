@@ -1894,6 +1894,29 @@ a { color: inherit; }
   font-weight: 500;
 }
 
+/* Earlier writing: a closed publication, set subordinate to the live feed above.
+   Matches .posts-list width so the heading aligns with the cards it introduces. */
+.posts-archive-head {
+  max-width: calc(var(--container) - 80px);
+  margin: 0 auto;
+  padding: 64px 0 18px;
+}
+.posts-archive-title {
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin: 0 0 10px;
+}
+.posts-archive-note {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 56ch;
+}
+
 /* ---------- Experience list (about page) ---------- */
 .experience-list {
   list-style: none;

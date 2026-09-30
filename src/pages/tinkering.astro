@@ -81,6 +81,38 @@ async function loadPosts(): Promise<Post[]> {
 
 const posts = await loadPosts();
 
+// SwitchUp Notes is a closed publication — it ran Jul–Aug 2025 and will not gain
+// new posts. These four are snapshotted rather than fetched: the feed above is the
+// one that has to stay current, and a build-time request to a dormant newsletter is
+// a dependency with no upside. If Substack ever stops serving it, a fetch would
+// silently empty this section instead of failing loudly.
+const ARCHIVE_POSTS: Post[] = [
+  {
+    title: 'Progress Isn’t Linear (And It’s Not Supposed To Be)',
+    link: 'https://switchupnotes.substack.com/p/progress-isnt-linear-and-its-not',
+    date: new Date('Tue, 05 Aug 2025 08:30:43 GMT'),
+    excerpt: 'How setbacks can help us achieve real change.',
+  },
+  {
+    title: 'Why Starting Small Feels So Damn Hard',
+    link: 'https://switchupnotes.substack.com/p/why-starting-small-feels-so-damn',
+    date: new Date('Tue, 29 Jul 2025 08:30:34 GMT'),
+    excerpt: 'And why the smarter move is to take small steps.',
+  },
+  {
+    title: 'Your Brain Doesn’t Care About Your Goals',
+    link: 'https://switchupnotes.substack.com/p/your-brain-doesnt-care-about-your',
+    date: new Date('Tue, 22 Jul 2025 08:30:30 GMT'),
+    excerpt: 'Why comfort always wins — and what to do about it.',
+  },
+  {
+    title: 'I Quit My Job and Tried to Get Fitter. Here’s What Actually Helped.',
+    link: 'https://switchupnotes.substack.com/p/i-quit-my-job-and-tried-to-get-fitter',
+    date: new Date('Mon, 14 Jul 2025 13:34:21 GMT'),
+    excerpt: 'A year ago, I quit my job.',
+  },
+];
+
 const dateFormatter = new Intl.DateTimeFormat('en-US', {
   year: 'numeric',
   month: 'short',
@@ -106,6 +138,24 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
         <p class="posts-empty">No posts yet — check back soon, or visit the Substack directly.</p>
       )}
       {posts.map((post) => (
+        <a href={post.link} class="post-card" target="_blank" rel="noopener">
+          <span class="post-date">{dateFormatter.format(post.date)}</span>
+          <h2 class="post-title">{post.title}</h2>
+          {post.excerpt && <p class="post-excerpt">{post.excerpt}</p>}
+          <span class="post-link">Read on Substack →</span>
+        </a>
+      ))}
+    </div>
+
+    <div class="posts-archive-head">
+      <h2 class="posts-archive-title">Earlier writing</h2>
+      <p class="posts-archive-note">
+        From <a href="https://switchupnotes.substack.com/" class="contact-link" target="_blank" rel="noopener">SwitchUp Notes</a>, a newsletter I wrote in 2025 about habits and starting over. It's no longer updated.
+      </p>
+    </div>
+
+    <div class="posts-list">
+      {ARCHIVE_POSTS.map((post) => (
         <a href={post.link} class="post-card" target="_blank" rel="noopener">
           <span class="post-date">{dateFormatter.format(post.date)}</span>
           <h2 class="post-title">{post.title}</h2>
