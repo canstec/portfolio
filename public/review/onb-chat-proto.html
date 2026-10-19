@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La Marmotte Onboarding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: prototype control strip on top, then the Steady onboarding shell (IntakeSidebar + chat column).
+   Tokens copied from frontend/src/index.css (light mode, the only mode live in the app). */
+:root {
+  color-scheme: light;
+  --c-primary: #141824;
+  --c-secondary: #515775;
+  --c-tertiary: #9499BB;
+  --c-quaternary: #DFE1F0;
+  --c-brand: #2663EB;
+  --c-surface-bg: #F7F8FC;
+  --c-surface: #FFFFFF;
+  --c-surface-secondary: #F7F8FC;
+  --c-surface-tertiary: #ECEEF8;
+  --c-surface-branded: #F3F7FF;
+  --c-surface-warning: #FEF9C3;
+  --c-surface-positive: #DBF8E6;
+  --c-border: #ECEEF8;
+  --c-border-bold: #DFE1F0;
+  --c-warning: #A16207;
+  --c-positive: #16A34A;
+  --c-amber-600: #d97706;
+  --c-amber-50: #fffbeb;
+  --c-divider: #f1f5f9;
+  --c-gray-200: #e2e8f0;
+  --c-proto-bg: #141824;
+  --c-proto-fg: #FFFFFF;
+  --c-proto-muted: #9499BB;
+  --c-proto-line: #252B3D;
+  --font-sans: 'Rubik', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--c-surface-bg); color: var(--c-primary);
+  font-family: var(--font-sans); font-size: 14px; line-height: 22px;
+  -webkit-font-smoothing: antialiased;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+[hidden] { display: none !important; }
+button { font-family: inherit; cursor: pointer; }
+button:focus-visible, textarea:focus-visible { outline: 2px solid var(--c-brand); outline-offset: 2px; }
+
+/* text styles — tailwind.config.js fontSize */
+.t-h1 { font-size: 22px; line-height: 32px; font-weight: 700; }
+.t-h3 { font-size: 16px; line-height: 24px; font-weight: 600; }
+.t-body { font-size: 14px; line-height: 22px; font-weight: 400; }
+.t-body-bold { font-size: 14px; line-height: 22px; font-weight: 600; }
+.t-caption { font-size: 12px; line-height: 18px; font-weight: 400; }
+.t-caption-bold { font-size: 12px; line-height: 18px; font-weight: 600; }
+
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+@keyframes bounce { 0%,100% { transform: translateY(-25%); animation-timing-function: cubic-bezier(.8,0,1,1); } 50% { transform: none; animation-timing-function: cubic-bezier(0,0,.2,1); } }
+@keyframes pulse { 50% { opacity: .5; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+.anim-in { animation: fadeInUp .6s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+@media (prefers-reduced-motion: reduce) { .anim-in, .dot, .spin, .caret { animation: none !important; } }
+
+/* ── Prototype strip (not part of the app) ── */
+.proto {
+  background: var(--c-proto-bg); color: var(--c-proto-fg);
+  padding: 10px 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px;
+  flex-shrink: 0; font-size: 12px; line-height: 18px;
+}
+.proto-title { font-weight: 600; font-size: 13px; }
+.proto-title span { color: var(--c-proto-muted); font-weight: 400; }
+.phases { display: flex; flex-wrap: wrap; gap: 4px; flex: 1; min-width: 0; }
+.phase { padding: 2px 8px; border-radius: 999px; color: var(--c-proto-muted); border: 1px solid var(--c-proto-line); white-space: nowrap; }
+.phase.on { background: var(--c-brand); border-color: var(--c-brand); color: var(--c-proto-fg); }
+.phase.done { color: var(--c-proto-fg); }
+.proto-ctl { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.pbtn { background: transparent; color: var(--c-proto-fg); border: 1px solid var(--c-proto-line); border-radius: 8px; padding: 4px 10px; font-size: 12px; line-height: 18px; }
+.pbtn:hover { border-color: var(--c-proto-muted); }
+.pbtn.primary { background: var(--c-brand); border-color: var(--c-brand); }
+.ptoggle { display: inline-flex; align-items: center; gap: 6px; color: var(--c-proto-muted); cursor: pointer; user-select: none; }
+.ptoggle input { accent-color: var(--c-brand); }
+
+/* ── App shell ── */
+.app { flex: 1; min-height: 0; display: flex; position: relative; }
+.screen { position: absolute; inset: 0; display: flex; }
+.screen[hidden] { display: none !important; }
+
+/* StravaCallbackPage */
+.sync { align-items: center; justify-content: center; background: var(--c-surface-bg); padding-inline: 24px; }
+.sync-inner { width: 100%; max-width: 420px; display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; }
+.sync-inner .applogo svg { width: 56px; height: 56px; display: block; }
+.sync h2 { margin: 0 0 4px; font-size: 21px; line-height: 28px; font-weight: 600; }
+.sync p { margin: 0; color: var(--c-tertiary); }
+.bar { width: 100%; height: 8px; background: var(--c-gray-200); border-radius: 999px; overflow: hidden; }
+.bar > div { height: 100%; width: 0; background: var(--c-brand); border-radius: 999px; transition: width .7s ease-out; }
+.sync-count { color: var(--c-quaternary); margin-top: 8px; }
+.ride-line { color: var(--c-secondary); min-height: 18px; font-variant-numeric: tabular-nums; }
+.check { color: var(--c-brand); }
+
+/* IntakeSidebar */
+.sidebar { width: 255px; flex-shrink: 0; background: var(--c-surface); border-right: 1px solid var(--c-border); display: flex; flex-direction: column; justify-content: space-between; }
+.sidebar .logo { padding: 24px; }
+.sidebar .logo svg { height: 36px; width: auto; display: block; }
+.nav { display: flex; flex-direction: column; gap: 4px; padding: 16px 24px; }
+.nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: var(--c-quaternary); }
+.nav-item.active { background: var(--c-surface-branded); color: var(--c-brand); font-weight: 600; }
+.side-foot { display: flex; flex-direction: column; gap: 12px; align-items: center; padding-bottom: 16px; }
+.badge-sync { display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--c-surface-positive); background: var(--c-surface-positive); color: var(--c-positive); white-space: nowrap; }
+.side-foot .badge-sync { width: 223px; box-sizing: border-box; }
+.user-row { display: flex; align-items: center; gap: 12px; padding: 17px 16px; width: 100%; box-sizing: border-box; border-top: 1px solid var(--c-border-bold); }
+.avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--c-brand); color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.mobile-header { display: none; align-items: center; justify-content: space-between; padding: 0 16px; height: 72px; background: var(--c-surface); box-shadow: 0 2px 10px rgba(0,0,0,.05); flex-shrink: 0; }
+.mobile-header svg.wordmark { height: 36px; width: auto; }
+
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; background: var(--c-surface-bg); }
+
+/* HomeScreen */
+.home { flex: 1; display: flex; align-items: center; justify-content: center; padding-inline: 32px; }
+.home-inner { display: flex; flex-direction: column; align-items: center; gap: 24px; width: 100%; max-width: 680px; }
+.home h1 { margin: 0; font-size: 32px; font-weight: 400; line-height: 40px; letter-spacing: -0.32px; text-align: center; text-wrap: balance; }
+
+/* Chat column */
+.chat { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.chat[hidden] { display: none; }
+.thread { flex: 1; min-height: 0; overflow-y: auto; padding: 32px 16px 24px; }
+.thread-inner { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+.composer { padding: 12px 16px 20px; display: flex; justify-content: center; flex-shrink: 0; }
+
+/* ChatBubbles */
+.row { display: flex; flex-direction: column; gap: 4px; max-width: 100%; }
+.row.coach { align-items: flex-start; }
+.row.user { align-items: flex-end; }
+.who { font-size: 11px; line-height: 16px; color: var(--c-tertiary); }
+.bubble { display: inline-block; max-width: min(500px, 100%); box-sizing: border-box; padding: 12px 16px; }
+.bubble.coach { background: var(--c-surface); border: 1px solid var(--c-border); border-radius: 16px 16px 16px 2px; color: var(--c-secondary); box-shadow: 0 1px 4px rgba(0,0,0,.04); }
+.bubble.user { background: var(--c-brand); color: #fff; border-radius: 16px 16px 2px 16px; white-space: pre-wrap; }
+.bubble p { margin: 0; }
+.bubble p + p, .bubble p + ul, .bubble ul + p { margin-top: 10px; }
+.bubble ul { margin: 0; padding-left: 18px; }
+.bubble li + li { margin-top: 4px; }
+.bubble strong { color: var(--c-primary); font-weight: 600; }
+.caret { display: inline-block; width: 1px; height: 16px; background: var(--c-brand); margin-left: 2px; vertical-align: text-bottom; animation: pulse 1s infinite; }
+.dots { display: flex; gap: 4px; align-items: center; height: 20px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c-tertiary); animation: bounce 1s infinite; }
+
+/* status line (SSE status) */
+.status { display: flex; align-items: center; gap: 8px; color: var(--c-tertiary); }
+.spin { animation: spin 1s linear infinite; }
+
+/* behind-the-scenes note */
+.note { align-self: center; max-width: 520px; box-sizing: border-box; border: 1px dashed var(--c-border-bold); border-radius: 10px; padding: 6px 12px; color: var(--c-secondary); background: var(--c-surface-tertiary); font-size: 12px; line-height: 18px; }
+.note code { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 11px; color: var(--c-brand); }
+body.hide-notes .note { display: none; }
+/* ?clean — no control strip and no behind-the-scenes notes, for recording or embedding.
+   Keys in clean mode: space play/pause, → next beat, R restart. */
+body.clean .proto { display: none; }
+
+/* OnboardingCards */
+.card { background: var(--c-surface); border: 1px solid var(--c-border); border-radius: 16px; overflow: hidden; width: 340px; max-width: 100%; box-sizing: border-box; box-shadow: 0 1px 3px rgba(0,0,0,.04), 0 8px 24px rgba(67,97,238,.07); }
+.card-head { display: flex; flex-direction: column; gap: 10px; padding: 24px 16px 0; }
+.pill { display: inline-flex; align-self: flex-start; background: var(--c-surface-branded); border-radius: 6px; padding: 2px 8px; color: var(--c-brand); text-transform: uppercase; letter-spacing: .025em; }
+.card h3 { margin: 0; }
+.divider { margin: 16px; height: 1px; background: var(--c-divider); }
+.stats { display: flex; flex-direction: column; gap: 12px; padding: 0 16px 24px; }
+.stat-label { color: var(--c-tertiary); text-transform: uppercase; letter-spacing: .025em; display: block; }
+.stat-value { color: var(--c-primary); display: block; }
+.gaps { display: flex; flex-direction: column; gap: 12px; max-width: 100%; }
+.gap { padding: 20px; }
+.gap-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.gap h4 { margin: 0; }
+.tag-stretch { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .025em; color: var(--c-amber-600); background: var(--c-amber-50); padding: 2px 6px; border-radius: 4px; }
+.gap-detail { color: var(--c-secondary); margin: 0 0 12px; line-height: 1.625; }
+.arrow-row { display: flex; align-items: center; gap: 12px; }
+.arrow-row .cur { color: var(--c-brand); }
+.arrow-row .tgt { color: var(--c-primary); }
+.arrow-row small { display: block; color: var(--c-tertiary); font-size: 12px; line-height: 18px; }
+.arrow-row svg { margin-top: -12px; flex-shrink: 0; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* AvailabilityWidget */
+.avail { padding: 24px; display: flex; flex-direction: column; gap: 24px; width: 360px; border-radius: 16px; box-shadow: 0 2px 16px rgba(67,97,238,.08); }
+.avail h3 { margin: 0; }
+.avail-sub { color: var(--c-tertiary); margin: 4px 0 0; }
+.avail-sub b { color: var(--c-brand); font-weight: 600; }
+.days { display: flex; gap: 12px; align-items: flex-end; justify-content: space-between; }
+.day { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; min-width: 0; }
+.day-h { color: var(--c-brand); min-height: 18px; font-variant-numeric: tabular-nums; }
+.track { width: 100%; height: 160px; border-radius: 20px; position: relative; cursor: ns-resize; user-select: none; background: var(--c-surface-secondary); border: 1.5px solid var(--c-border); overflow: hidden; touch-action: none; box-sizing: border-box; }
+.fill { position: absolute; bottom: 0; left: 0; right: 0; height: 0; background-image: linear-gradient(173deg, #4361EE 7%, #7B4FE0 93%); border-radius: 8px 8px 20px 20px; transition: height .25s ease-out; }
+.track.dragging .fill { transition: height .07s; }
+.day-l { color: var(--c-tertiary); }
+.btn { height: 40px; border: 0; border-radius: 12px; padding: 0 24px; background: var(--c-brand); color: #fff; font-size: 14px; line-height: 22px; font-weight: 600; transition: opacity .15s; }
+.btn:hover { opacity: .9; }
+.btn.full { width: 100%; }
+.btn:disabled { background: var(--c-surface-tertiary); color: var(--c-tertiary); cursor: not-allowed; opacity: 1; }
+.confirmed { display: flex; align-items: center; gap: 8px; color: var(--c-positive); }
+
+/* InputBar */
+.input { position: relative; display: flex; align-items: flex-end; gap: 10px; background: var(--c-surface); border-radius: 16px; padding: 1px 14px 1px 20px; width: 100%; max-width: 680px; box-sizing: border-box; border: 1.5px solid var(--c-border-bold); box-shadow: 0 4px 24px rgba(67,97,238,.10); transition: border-color .15s, box-shadow .15s; }
+.input.focus { border-color: #A5B4FC; box-shadow: 0 4px 24px rgba(67,97,238,.18); }
+.input .ph { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); pointer-events: none; display: flex; align-items: center; color: var(--c-tertiary); }
+.input .ph .c { display: inline-block; width: 1.5px; height: 1em; background: var(--c-tertiary); margin-left: 1px; animation: pulse 1s infinite; }
+.input textarea { flex: 1; border: 0; outline: none; background: transparent; color: var(--c-primary); resize: none; font: inherit; font-size: 14px; line-height: 22px; padding: 21px 0; height: 64px; box-sizing: border-box; min-width: 0; }
+.input textarea:focus-visible { outline: none; }
+.send-wrap { height: 64px; display: flex; align-items: center; flex-shrink: 0; }
+.send { width: 40px; height: 40px; border-radius: 12px; border: 0; background: var(--c-brand); display: flex; align-items: center; justify-content: center; opacity: .3; transition: opacity .15s; }
+.send.ready { opacity: 1; }
+.input.disabled { opacity: .6; }
+
+/* end overlay */
+.end { position: absolute; inset: 0; background: rgba(0,0,0,.30); display: flex; align-items: center; justify-content: center; padding-inline: 16px; z-index: 5; }
+.end-card { background: var(--c-surface); border-radius: 16px; padding: 24px; max-width: 380px; display: flex; flex-direction: column; gap: 12px; }
+.end-card h3 { margin: 0; }
+.end-card p { margin: 0; color: var(--c-secondary); }
+.end-card .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn.secondary { background: var(--c-surface-tertiary); color: var(--c-primary); }
+
+@media (max-width: 767px) {
+  .sidebar { display: none; }
+  .mobile-header { display: flex; }
+  /* bottom padding offsets the 72px app header (plus a little for the status bar) so the question sits at the optical centre of the phone */
+  .home { padding-inline: 16px; padding-bottom: 96px; }
+  .bubble.user { max-width: 80%; }
+  .home h1 { font-size: 26px; line-height: 34px; }
+  .thread { padding-top: 20px; }
+  .avail { width: 100%; padding: 16px; }
+  .days { gap: 8px; }
+  .proto-title span { display: none; }
+}
+</style>
+
+</head>
+<body>
+<div class="proto" role="region" aria-label="Prototype controls">
+  <div class="proto-title">La Marmotte onboarding <span>· V2, coach-led · mock data</span></div>
+  <div class="phases" id="phases"></div>
+  <div class="proto-ctl">
+    <button class="pbtn" id="playBtn" type="button">Pause</button>
+    <button class="pbtn primary" id="nextBtn" type="button">Next →</button>
+    <button class="pbtn" id="restartBtn" type="button">Restart</button>
+    <label class="ptoggle"><input type="checkbox" id="notesToggle" checked> Behind the scenes</label>
+  </div>
+</div>
+
+<div class="app">
+  <!-- Strava sync (StravaCallbackPage) -->
+  <section class="screen sync" id="syncScreen">
+    <div class="sync-inner">
+      <div class="applogo"><svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_446_9807)">
+<path d="M56 0H16C7.16344 0 0 7.16344 0 16V56C0 64.8366 7.16344 72 16 72H56C64.8366 72 72 64.8366 72 56V16C72 7.16344 64.8366 0 56 0Z" fill="url(#paint0_linear_446_9807)"/>
+<path d="M28.2598 52.5604L45.6748 19.4404L63.0898 52.5604H28.2598Z" fill="url(#paint1_linear_446_9807)"/>
+<path d="M28.2598 52.5604L45.6748 19.4404L63.0898 52.5604" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<g opacity="0.8">
+<path d="M18 52.5608L32.76 28.8008L47.52 52.5608H18Z" fill="url(#paint2_linear_446_9807)"/>
+<path d="M18 52.5608L32.76 28.8008L47.52 52.5608" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g opacity="0.5">
+<path d="M8.64014 52.56L20.8802 36L33.1202 52.56H8.64014Z" fill="url(#paint3_linear_446_9807)"/>
+<path d="M8.64014 52.56L20.8802 36L33.1202 52.56" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<path opacity="0.6" d="M5.04004 38.1602H66.9601" stroke="white" stroke-width="2" stroke-dasharray="3 3"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_446_9807" x1="75" y1="52" x2="8" y2="8" gradientUnits="userSpaceOnUse">
+<stop stop-color="#2663EB"/>
+<stop offset="1" stop-color="#7C3AED"/>
+</linearGradient>
+<linearGradient id="paint1_linear_446_9807" x1="5.03972" y1="52.5604" x2="5.03972" y2="18.0004" gradientUnits="userSpaceOnUse">
+<stop stop-color="white" stop-opacity="0.05"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+<linearGradient id="paint2_linear_446_9807" x1="-1.68" y1="52.5608" x2="-1.68" y2="27.7678" gradientUnits="userSpaceOnUse">
+<stop stop-color="white" stop-opacity="0.05"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+<linearGradient id="paint3_linear_446_9807" x1="-7.67986" y1="52.56" x2="-7.67986" y2="35.28" gradientUnits="userSpaceOnUse">
+<stop stop-color="white" stop-opacity="0.05"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+<clipPath id="clip0_446_9807">
+<rect width="72" height="72" fill="white"/>
+</clipPath>
+</defs>
+</svg></div>
+      <div class="check" id="syncCheck" hidden>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div>
+        <h2 id="syncTitle">Loading your recent rides</h2>
+        <p id="syncSub">Pulling your last 3 months of Strava data…</p>
+      </div>
+      <div id="syncProgress" style="width:100%">
+        <div class="bar"><div id="syncBar"></div></div>
+        <div class="t-caption sync-count" id="syncCount">Connecting…</div>
+      </div>
+      <div class="t-caption ride-line" id="rideLine"></div>
+    </div>
+  </section>
+
+  <!-- Onboarding shell -->
+  <section class="screen" id="shell" hidden>
+    <nav class="sidebar" aria-label="Steady">
+      <div>
+        <div class="logo"><svg width="114" height="36" viewBox="0 0 114 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M107.803 19.3896H107.846L110.612 12.5898H113.701L107.096 27.5283H104.028L106.538 21.9395H105.916L101.562 12.5898H104.715L107.803 19.3896ZM49.4258 8C50.4408 8 51.3272 8.17713 52.085 8.53125C52.857 8.87125 53.465 9.3669 53.9082 10.0186C54.3657 10.6702 54.6091 11.4352 54.6377 12.3135H51.5273C51.513 11.9594 51.4133 11.6407 51.2275 11.3574C51.056 11.0599 50.8126 10.8262 50.498 10.6562C50.1835 10.4863 49.8045 10.4014 49.3613 10.4014C48.9897 10.3872 48.6537 10.4438 48.3535 10.5713C48.0533 10.6846 47.8099 10.8617 47.624 11.1025C47.4526 11.3433 47.3672 11.6549 47.3672 12.0371C47.3672 12.377 47.4454 12.6748 47.6025 12.9297C47.7741 13.1705 48.0176 13.3759 48.332 13.5459C48.6465 13.7159 49.0113 13.8857 49.4258 14.0557C49.8547 14.2115 50.3271 14.3749 50.8418 14.5449C51.5994 14.7999 52.2929 15.1049 52.9219 15.459C53.5508 15.799 54.0512 16.2455 54.4229 16.7979C54.7944 17.3503 54.9805 18.0725 54.9805 18.9648C54.9805 19.7439 54.7801 20.4734 54.3799 21.1533C53.9796 21.8192 53.386 22.3577 52.5996 22.7686C51.8134 23.1793 50.8414 23.3847 49.6836 23.3848C48.597 23.3848 47.6244 23.2004 46.7666 22.832C45.9233 22.4638 45.2513 21.9259 44.751 21.2178C44.2649 20.5095 44.0144 19.6522 44 18.6465H47.0664C47.0807 19.0855 47.1886 19.4819 47.3887 19.8359C47.6031 20.1901 47.903 20.474 48.2891 20.6865C48.6751 20.8848 49.1403 20.9834 49.6836 20.9834C50.1267 20.9834 50.513 20.9195 50.8418 20.792C51.1847 20.6503 51.449 20.4448 51.6348 20.1758C51.8348 19.9067 51.9355 19.5742 51.9355 19.1777C51.9355 18.7528 51.8277 18.3985 51.6133 18.1152C51.4132 17.832 51.1274 17.5909 50.7559 17.3926C50.3841 17.1801 49.962 16.9957 49.4902 16.8398C49.0185 16.6841 48.5253 16.5215 48.0107 16.3516C46.8098 15.9407 45.8947 15.4158 45.2656 14.7783C44.6365 14.1267 44.3213 13.2768 44.3213 12.2285C44.3213 11.3504 44.5361 10.5998 44.9648 9.97656C45.4081 9.33906 46.016 8.84977 46.7881 8.50977C47.5601 8.16981 48.4393 8.00001 49.4258 8ZM69.9971 12.335C71.0547 12.335 71.9837 12.5616 72.7842 13.0146C73.5991 13.468 74.2287 14.0915 74.6719 14.8848C75.1294 15.6639 75.3584 16.5494 75.3584 17.541V18.0303C75.3584 18.2002 75.344 18.3775 75.3154 18.5615H67.2871C67.322 19.0093 67.4305 19.4059 67.6162 19.751C67.8449 20.1617 68.1594 20.4804 68.5596 20.707C68.9742 20.9337 69.4394 21.0479 69.9541 21.0479C70.483 21.0478 70.9258 20.9336 71.2832 20.707C71.6406 20.4662 71.9128 20.1622 72.0986 19.7939H75.0576C74.8431 20.4596 74.5 21.0687 74.0283 21.6211C73.5565 22.1594 72.9773 22.5912 72.291 22.917C71.6049 23.2286 70.8332 23.3847 69.9756 23.3848C68.889 23.3848 67.9236 23.1584 67.0801 22.7051C66.2508 22.2517 65.5997 21.6137 65.1279 20.792C64.6563 19.9704 64.4209 19.0281 64.4209 17.9658C64.4209 16.8609 64.6499 15.8904 65.1074 15.0547C65.5792 14.2049 66.2295 13.5392 67.0586 13.0576C67.9021 12.576 68.8819 12.335 69.9971 12.335ZM82.0322 12.335C83.0473 12.335 83.9274 12.5047 84.6709 12.8447C85.4142 13.1706 85.9864 13.6599 86.3867 14.3115C86.7868 14.9489 86.9863 15.7279 86.9863 16.6484V23.1299H84.585L84.2627 21.4932H84.2197C84.0196 21.7905 83.7914 22.06 83.5342 22.3008C83.2911 22.5416 83.019 22.7407 82.7188 22.8965C82.4186 23.0522 82.0897 23.1728 81.7324 23.2578C81.375 23.3428 80.9888 23.3848 80.5742 23.3848C79.7164 23.3848 79.0016 23.2433 78.4297 22.96C77.8721 22.6766 77.4572 22.2942 77.1855 21.8125C76.9282 21.3309 76.7998 20.7995 76.7998 20.2188C76.7998 19.5671 76.9641 18.9929 77.293 18.4971C77.6361 18.0014 78.1508 17.6187 78.8369 17.3496C79.5232 17.0663 80.3817 16.9248 81.4111 16.9248H84.0918C84.0918 16.4007 84.0127 15.9752 83.8555 15.6494C83.7125 15.3096 83.4834 15.0547 83.1689 14.8848C82.8687 14.7149 82.4824 14.6299 82.0107 14.6299C81.4676 14.63 80.9959 14.7578 80.5957 15.0127C80.1955 15.2535 79.952 15.6288 79.8662 16.1387H77.0576C77.1291 15.3596 77.3788 14.6867 77.8076 14.1201C78.2508 13.5535 78.8373 13.1144 79.5664 12.8027C80.2955 12.4911 81.1174 12.335 82.0322 12.335ZM100.234 23.1299H97.7461L97.5107 21.4082H97.4678C97.2247 21.8048 96.9176 22.1527 96.5459 22.4502C96.1885 22.7477 95.7735 22.9741 95.3018 23.1299C94.83 23.2999 94.3009 23.3847 93.7148 23.3848C92.7141 23.3848 91.8277 23.1437 91.0557 22.6621C90.2979 22.1804 89.7043 21.5287 89.2754 20.707C88.8466 19.8714 88.6319 18.9226 88.6318 17.8604C88.6318 16.7979 88.8465 15.8485 89.2754 15.0127C89.7043 14.1769 90.3051 13.5251 91.0771 13.0576C91.8492 12.576 92.75 12.335 93.7793 12.335C94.5798 12.335 95.2805 12.4911 95.8809 12.8027C96.4954 13.1001 96.9815 13.4893 97.3389 13.9707V8.08496H100.234V23.1299ZM60.71 12.5898H63.54V14.9277H60.71V19.4111C60.71 19.9069 60.8168 20.2538 61.0312 20.4521C61.2457 20.6363 61.6103 20.7285 62.125 20.7285H63.4756V23.1299H61.5889C60.8313 23.1299 60.1665 23.0166 59.5947 22.79C59.0371 22.5492 58.6007 22.1594 58.2861 21.6211C57.9716 21.0686 57.8145 20.3173 57.8145 19.3682V14.9277H55.9912V12.5898H57.8145L58.1357 9.7207H60.71V12.5898ZM81.7539 18.6885C81.3107 18.6885 80.9461 18.7451 80.6602 18.8584C80.3743 18.9575 80.1668 19.1064 80.0381 19.3047C79.9094 19.4889 79.8447 19.7089 79.8447 19.9639C79.8448 20.2187 79.9096 20.438 80.0381 20.6221C80.1811 20.8062 80.3669 20.9487 80.5957 21.0479C80.8387 21.1328 81.1253 21.1748 81.4541 21.1748C81.8399 21.1748 82.1761 21.1108 82.4619 20.9834C82.762 20.8418 83.019 20.6572 83.2334 20.4307C83.4478 20.204 83.6122 19.942 83.7266 19.6445C83.8552 19.3329 83.9415 19.0142 83.9844 18.6885H81.7539ZM94.4648 14.7363C93.9074 14.7364 93.407 14.8706 92.9639 15.1396C92.5206 15.3946 92.1776 15.7561 91.9346 16.2236C91.6915 16.6911 91.5703 17.2297 91.5703 17.8389C91.5703 18.462 91.6916 19.0072 91.9346 19.4746C92.1776 19.9421 92.5206 20.3109 92.9639 20.5801C93.407 20.835 93.9074 20.9619 94.4648 20.9619C95.051 20.9619 95.5594 20.8351 95.9883 20.5801C96.4314 20.3109 96.7746 19.942 97.0176 19.4746C97.2748 19.0072 97.4033 18.462 97.4033 17.8389C97.4033 17.2298 97.2749 16.6911 97.0176 16.2236C96.7746 15.7562 96.4314 15.3946 95.9883 15.1396C95.5594 14.8705 95.051 14.7363 94.4648 14.7363ZM69.9971 14.6299C69.4967 14.6299 69.0386 14.7431 68.624 14.9697C68.2094 15.1822 67.8807 15.5082 67.6377 15.9473C67.5017 16.1929 67.4056 16.4768 67.3457 16.7979H72.4199C72.377 16.1462 72.1274 15.6213 71.6699 15.2246C71.2268 14.828 70.6689 14.63 69.9971 14.6299Z" fill="#2663EB"/>
+<rect width="36" height="36" rx="8" fill="url(#paint0_linear_0_23)"/>
+<path d="M14.1299 26.28L22.8374 9.71997L31.5449 26.28H14.1299Z" fill="url(#paint1_linear_0_23)"/>
+<path d="M14.1299 26.28L22.8374 9.71997L31.5449 26.28" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+<g opacity="0.8">
+<path d="M9 26.2799L16.38 14.3999L23.76 26.2799H9Z" fill="url(#paint2_linear_0_23)"/>
+<path d="M9 26.2799L16.38 14.3999L23.76 26.2799" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g opacity="0.5">
+<path d="M4.31982 26.28L10.4398 18L16.5598 26.28H4.31982Z" fill="url(#paint3_linear_0_23)"/>
+<path d="M4.31982 26.28L10.4398 18L16.5598 26.28" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<path opacity="0.6" d="M2.52002 19.0801H33.48" stroke="white" stroke-dasharray="3 3"/>
+<defs>
+<linearGradient id="paint0_linear_0_23" x1="37.5" y1="26" x2="4" y2="4" gradientUnits="userSpaceOnUse">
+<stop stop-color="#2663EB"/>
+<stop offset="1" stop-color="#7C3AED"/>
+</linearGradient>
+<linearGradient id="paint1_linear_0_23" x1="2.51988" y1="26.28" x2="2.51988" y2="8.99997" gradientUnits="userSpaceOnUse">
+<stop stop-color="white" stop-opacity="0.05"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+<linearGradient id="paint2_linear_0_23" x1="-0.84" y1="26.2799" x2="-0.84" y2="13.8834" gradientUnits="userSpaceOnUse">
+<stop stop-color="white" stop-opacity="0.05"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+<linearGradient id="paint3_linear_0_23" x1="-3.84018" y1="26.28" x2="-3.84018" y2="17.64" gradientUnits="userSpaceOnUse">
+<stop stop-color="white" stop-opacity="0.05"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+</defs>
+</svg></div>
+        <div class="nav">
+          <div class="nav-item active t-body-bold">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12.1638 3.32105C12.3489 3.05352 12.688 2.93716 13 3.03346C13.3119 3.12981 13.5244 3.41626 13.5244 3.74086V9.3528H17.2539C17.5308 9.3528 17.7853 9.50499 17.9143 9.74849C18.0433 9.99208 18.0256 10.287 17.8687 10.5138L10.8361 20.679C10.651 20.9463 10.3119 21.0628 9.99994 20.9666C9.688 20.8702 9.47549 20.5828 9.47549 20.2582V14.6472H5.74605C5.46906 14.6472 5.21458 14.4942 5.08563 14.2506C4.9568 14.007 4.9744 13.712 5.13128 13.4853L12.1638 3.32105ZM7.16401 13.1649H10.2214C10.6333 13.1649 10.9673 13.4967 10.9673 13.9061V17.8716L15.8359 10.8352H12.7786C12.3667 10.8351 12.0328 10.5032 12.0327 10.094V6.12654L7.16401 13.1649Z" fill="#2663EB"/></svg>
+            Welcome
+          </div>
+          <div class="nav-item t-body"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Today</div>
+          <div class="nav-item t-body"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 9.5h18M7.5 3v3.5M16.5 3v3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Schedule</div>
+          <div class="nav-item t-body"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="m12 4 9 4.4-9 4.4-9-4.4L12 4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="m3 12.2 9 4.4 9-4.4M3 15.8l9 4.4 9-4.4" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Plan overview</div>
+          <div class="nav-item t-body"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="10.5" width="4.5" height="9.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9.75" y="4" width="4.5" height="16" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="16.5" y="7" width="4.5" height="13" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>Progress</div>
+        </div>
+      </div>
+      <div class="side-foot">
+        <div class="badge-sync t-caption-bold">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.5" stroke="#16A34A" stroke-width="1.2"/><path d="M4 7L6 9.5L10 4.5" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Strava synced
+        </div>
+        <div class="user-row">
+          <div class="avatar t-caption-bold">MA</div>
+          <span class="t-caption-bold">Marta Alves</span>
+        </div>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="mobile-header">
+        <span class="wm"><svg class="wordmark" width="114" height="36" viewBox="0 0 114 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M107.803 19.3896H107.846L110.612 12.5898H113.701L107.096 27.5283H104.028L106.538 21.9395H105.916L101.562 12.5898H104.715L107.803 19.3896ZM49.4258 8C50.4408 8 51.3272 8.17713 52.085 8.53125C52.857 8.87125 53.465 9.3669 53.9082 10.0186C54.3657 10.6702 54.6091 11.4352 54.6377 12.3135H51.5273C51.513 11.9594 51.4133 11.6407 51.2275 11.3574C51.056 11.0599 50.8126 10.8262 50.498 10.6562C50.1835 10.4863 49.8045 10.4014 49.3613 10.4014C48.9897 10.3872 48.6537 10.4438 48.3535 10.5713C48.0533 10.6846 47.8099 10.8617 47.624 11.1025C47.4526 11.3433 47.3672 11.6549 47.3672 12.0371C47.3672 12.377 47.4454 12.6748 47.6025 12.9297C47.7741 13.1705 48.0176 13.3759 48.332 13.5459C48.6465 13.7159 49.0113 13.8857 49.4258 14.0557C49.8547 14.2115 50.3271 14.3749 50.8418 14.5449C51.5994 14.7999 52.2929 15.1049 52.9219 15.459C53.5508 15.799 54.0512 16.2455 54.4229 16.7979C54.7944 17.3503 54.9805 18.0725 54.9805 18.9648C54.9805 19.7439 54.7801 20.4734 54.3799 21.1533C53.9796 21.8192 53.386 22.3577 52.5996 22.7686C51.8134 23.1793 50.8414 23.3847 49.6836 23.3848C48.597 23.3848 47.6244 23.2004 46.7666 22.832C45.9233 22.4638 45.2513 21.9259 44.751 21.2178C44.2649 20.5095 44.0144 19.6522 44 18.6465H47.0664C47.0807 19.0855 47.1886 19.4819 47.3887 19.8359C47.6031 20.1901 47.903 20.474 48.2891 20.6865C48.6751 20.8848 49.1403 20.9834 49.6836 20.9834C50.1267 20.9834 50.513 20.9195 50.8418 20.792C51.1847 20.6503 51.449 20.4448 51.6348 20.1758C51.8348 19.9067 51.9355 19.5742 51.9355 19.1777C51.9355 18.7528 51.8277 18.3985 51.6133 18.1152C51.4132 17.832 51.1274 17.5909 50.7559 17.3926C50.3841 17.1801 49.962 16.9957 49.4902 16.8398C49.0185 16.6841 48.5253 16.5215 48.0107 16.3516C46.8098 15.9407 45.8947 15.4158 45.2656 14.7783C44.6365 14.1267 44.3213 13.2768 44.3213 12.2285C44.3213 11.3504 44.5361 10.5998 44.9648 9.97656C45.4081 9.33906 46.016 8.84977 46.7881 8.50977C47.5601 8.16981 48.4393 8.00001 49.4258 8ZM69.9971 12.335C71.0547 12.335 71.9837 12.5616 72.7842 13.0146C73.5991 13.468 74.2287 14.0915 74.6719 14.8848C75.1294 15.6639 75.3584 16.5494 75.3584 17.541V18.0303C75.3584 18.2002 75.344 18.3775 75.3154 18.5615H67.2871C67.322 19.0093 67.4305 19.4059 67.6162 19.751C67.8449 20.1617 68.1594 20.4804 68.5596 20.707C68.9742 20.9337 69.4394 21.0479 69.9541 21.0479C70.483 21.0478 70.9258 20.9336 71.2832 20.707C71.6406 20.4662 71.9128 20.1622 72.0986 19.7939H75.0576C74.8431 20.4596 74.5 21.0687 74.0283 21.6211C73.5565 22.1594 72.9773 22.5912 72.291 22.917C71.6049 23.2286 70.8332 23.3847 69.9756 23.3848C68.889 23.3848 67.9236 23.1584 67.0801 22.7051C66.2508 22.2517 65.5997 21.6137 65.1279 20.792C64.6563 19.9704 64.4209 19.0281 64.4209 17.9658C64.4209 16.8609 64.6499 15.8904 65.1074 15.0547C65.5792 14.2049 66.2295 13.5392 67.0586 13.0576C67.9021 12.576 68.8819 12.335 69.9971 12.335ZM82.0322 12.335C83.0473 12.335 83.9274 12.5047 84.6709 12.8447C85.4142 13.1706 85.9864 13.6599 86.3867 14.3115C86.7868 14.9489 86.9863 15.7279 86.9863 16.6484V23.1299H84.585L84.2627 21.4932H84.2197C84.0196 21.7905 83.7914 22.06 83.5342 22.3008C83.2911 22.5416 83.019 22.7407 82.7188 22.8965C82.4186 23.0522 82.0897 23.1728 81.7324 23.2578C81.375 23.3428 80.9888 23.3848 80.5742 23.3848C79.7164 23.3848 79.0016 23.2433 78.4297 22.96C77.8721 22.6766 77.4572 22.2942 77.1855 21.8125C76.9282 21.3309 76.7998 20.7995 76.7998 20.2188C76.7998 19.5671 76.9641 18.9929 77.293 18.4971C77.6361 18.0014 78.1508 17.6187 78.8369 17.3496C79.5232 17.0663 80.3817 16.9248 81.4111 16.9248H84.0918C84.0918 16.4007 84.0127 15.9752 83.8555 15.6494C83.7125 15.3096 83.4834 15.0547 83.1689 14.8848C82.8687 14.7149 82.4824 14.6299 82.0107 14.6299C81.4676 14.63 80.9959 14.7578 80.5957 15.0127C80.1955 15.2535 79.952 15.6288 79.8662 16.1387H77.0576C77.1291 15.3596 77.3788 14.6867 77.8076 14.1201C78.2508 13.5535 78.8373 13.1144 79.5664 12.8027C80.2955 12.4911 81.1174 12.335 82.0322 12.335ZM100.234 23.1299H97.7461L97.5107 21.4082H97.4678C97.2247 21.8048 96.9176 22.1527 96.5459 22.4502C96.1885 22.7477 95.7735 22.9741 95.3018 23.1299C94.83 23.2999 94.3009 23.3847 93.7148 23.3848C92.7141 23.3848 91.8277 23.1437 91.0557 22.6621C90.2979 22.1804 89.7043 21.5287 89.2754 20.707C88.8466 19.8714 88.6319 18.9226 88.6318 17.8604C88.6318 16.7979 88.8465 15.8485 89.2754 15.0127C89.7043 14.1769 90.3051 13.5251 91.0771 13.0576C91.8492 12.576 92.75 12.335 93.7793 12.335C94.5798 12.335 95.2805 12.4911 95.8809 12.8027C96.4954 13.1001 96.9815 13.4893 97.3389 13.9707V8.08496H100.234V23.1299ZM60.71 12.5898H63.54V14.9277H60.71V19.4111C60.71 19.9069 60.8168 20.2538 61.0312 20.4521C61.2457 20.6363 61.6103 20.7285 62.125 20.7285H63.4756V23.1299H61.5889C60.8313 23.1299 60.1665 23.0166 59.5947 22.79C59.0371 22.5492 58.6007 22.1594 58.2861 21.6211C57.9716 21.0686 57.8145 20.3173 57.8145 19.3682V14.9277H55.9912V12.5898H57.8145L58.1357 9.7207H60.71V12.5898ZM81.7539 18.6885C81.3107 18.6885 80.9461 18.7451 80.6602 18.8584C80.3743 18.9575 80.1668 19.1064 80.0381 19.3047C79.9094 19.4889 79.8447 19.7089 79.8447 19.9639C79.8448 20.2187 79.9096 20.438 80.0381 20.6221C80.1811 20.8062 80.3669 20.9487 80.5957 21.0479C80.8387 21.1328 81.1253 21.1748 81.4541 21.1748C81.8399 21.1748 82.1761 21.1108 82.4619 20.9834C82.762 20.8418 83.019 20.6572 83.2334 20.4307C83.4478 20.204 83.6122 19.942 83.7266 19.6445C83.8552 19.3329 83.9415 19.0142 83.9844 18.6885H81.7539ZM94.4648 14.7363C93.9074 14.7364 93.407 14.8706 92.9639 15.1396C92.5206 15.3946 92.1776 15.7561 91.9346 16.2236C91.6915 16.6911 91.5703 17.2297 91.5703 17.8389C91.5703 18.462 91.6916 19.0072 91.9346 19.4746C92.1776 19.9421 92.5206 20.3109 92.9639 20.5801C93.407 20.835 93.9074 20.9619 94.4648 20.9619C95.051 20.9619 95.5594 20.8351 95.9883 20.5801C96.4314 20.3109 96.7746 19.942 97.0176 19.4746C97.2748 19.0072 97.4033 18.462 97.4033 17.8389C97.4033 17.2298 97.2749 16.6911 97.0176 16.2236C96.7746 15.7562 96.4314 15.3946 95.9883 15.1396C95.5594 14.8705 95.051 14.7363 94.4648 14.7363ZM69.9971 14.6299C69.4967 14.6299 69.0386 14.7431 68.624 14.9697C68.2094 15.1822 67.8807 15.5082 67.6377 15.9473C67.5017 16.1929 67.4056 16.4768 67.3457 16.7979H72.4199C72.377 16.1462 72.1274 15.6213 71.6699 15.2246C71.2268 14.828 70.6689 14.63 69.9971 14.6299Z" fill="#2663EB"/>
+<rect width="36" height="36" rx="8" fill="url(#paint0_linear_0_23_m)"/>
+<path d="M14.1299 26.28L22.8374 9.71997L31.5449 26.28H14.1299Z" fill="url(#paint1_linear_0_23_m)"/>
+<path d="M14.1299 26.28L22.8374 9.71997L31.5449 26.28" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+<g opacity="0.8">
+<path d="M9 26.2799L16.38 14.3999L23.76 26.2799H9Z" fill="url(#paint2_linear_0_23_m)"/>
+<path d="M9 26.2799L16.38 14.3999L23.76 26.2799" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g opacity="0.5">
+<path d="M4.31982 26.28L10.4398 18L16.5598 26.28H4.31982Z" fill="url(#paint3_linear_0_23_m)"/>
+<path d="M4.31982 26.28L10.4398 18L16.5598 26.28" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<path opacity="0.6" d="M2.52002 19.0801H33.48" stroke="white" stroke-dasharray="3 3"/>
+<defs>
+<linearGradient id="paint0_linear_0_23_m" x1="37.5" y1="26" x2="4" y2="4" gradientUnits="userSpaceOnUse">
+<stop stop-color="#2663EB"/>
+<stop offset="1" stop-color="#7C3AED"/>
+</linearGradient>
+<linearGradient id="paint1_linear_0_23_m" x1="2.51988" y1="26.28" x2="2.51988" y2="8.99997" gradientUnits="userSpaceOnUse">
+<stop stop-color="white" stop-opacity="0.05"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+<linearGradient id="paint2_linear_0_23_m" x1="-0.84" y1="26.2799" x2="-0.84" y2="13.8834" gradientUnits="userSpaceOnUse">
+<stop stop-color="white" stop-opacity="0.05"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+<linearGradient id="paint3_linear_0_23_m" x1="-3.84018" y1="26.28" x2="-3.84018" y2="17.64" gradientUnits="userSpaceOnUse">
+<stop stop-color="white" stop-opacity="0.05"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+</defs>
+</svg></span>
+        <div class="badge-sync t-caption-bold">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.5" stroke="#16A34A" stroke-width="1.2"/><path d="M4 7L6 9.5L10 4.5" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Strava synced
+        </div>
+      </div>
+
+      <div class="home" id="home">
+        <div class="home-inner anim-in">
+          <h1>Hi Marta, what are you training for?</h1>
+          <div id="homeInputSlot" style="width:100%;display:flex;justify-content:center"></div>
+        </div>
+      </div>
+
+      <div class="chat" id="chat" hidden>
+        <div class="thread" id="thread"><div class="thread-inner" id="threadInner"></div></div>
+        <div class="composer" id="chatInputSlot"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="end" id="endOverlay" hidden>
+    <div class="end-card" role="dialog" aria-label="End of prototype">
+      <h3 class="t-h3">Next stop: /plan</h3>
+      <p>The prototype ends here. In the app, Marta lands on her 16-week La Marmotte plan.</p>
+      <div class="actions">
+        <button class="btn" id="endRestart" type="button">Play again</button>
+        <button class="btn secondary" id="endClose" type="button">Back to chat</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const PHASES = ['Strava sync', 'Goal', 'Assessment', 'Availability', 'Confirm', 'Plan'];
+  const PLACEHOLDERS = ['Training for Serra de Estrela 2026…', 'Move up to Cat B on Zwift…', 'Plan a cycling trip to Mallorca…', 'Finish my first granfondo…', "Get ready for L'Étape du Tour…"];
+  const DAYS = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+  const DAY_SHORT = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const PRESET = { monday: 0, tuesday: 1.5, wednesday: 1, thursday: 1.5, friday: 0, saturday: 4, sunday: 2.5 };
+  const RIDES = [
+    ['Morning ride', '14 Mar', '2h 12m'], ['Tempo intervals', '12 Mar', '1h 18m'], ['Recovery spin', '10 Mar', '0h 52m'],
+    ['Sintra loop', '8 Mar', '5h 06m'], ['Sweet spot 3×15', '5 Mar', '1h 30m'], ['Serra de Montejunto', '1 Mar', '4h 21m'],
+    ['Lunch ride', '26 Feb', '1h 05m'], ['20 min test', '22 Feb', '1h 10m'], ['Cascais coast', '15 Feb', '3h 48m'],
+    ['Endurance', '8 Feb', '3h 12m'], ['Hill repeats', '4 Feb', '1h 24m'], ['Long Sunday', '18 Jan', '4h 40m'],
+  ];
+
+  let autoplay = true, runId = 0, pending = null, typing = null;
+  const params = new URLSearchParams(location.search);
+  const clean = params.has('clean');
+  const skipSync = params.has('skipsync'); // start on the "Hi Marta" screen
+  const SPEED = Math.max(.5, Math.min(4, parseFloat(params.get('speed')) || 1)); // ?speed=1.6 plays everything faster
+  if (clean) document.body.classList.add('clean', 'hide-notes');
+
+  /* ── gate: pause between beats. Autoplay resolves after ms; Next/Send always resolve. ── */
+  function gate(ms) {
+    return new Promise(resolve => {
+      const g = { resolve, ms: ms / SPEED, timer: null, held: false };
+      g.fire = () => { if (pending !== g) return; clearTimeout(g.timer); pending = null; resolve(); };
+      g.arm = () => { clearTimeout(g.timer); if (autoplay && !g.held) g.timer = setTimeout(g.fire, g.ms); };
+      pending = g; g.arm();
+    });
+  }
+  const sleep = ms => new Promise(r => setTimeout(r, ms / SPEED));
+  class Cancel extends Error {}
+  function guard(id) { if (id !== runId) throw new Cancel(); }
+
+  /* ── phases strip ── */
+  function setPhase(i) {
+    $('phases').innerHTML = PHASES.map((p, j) => `<span class="phase ${j === i ? 'on' : j < i ? 'done' : ''}">${p}</span>`).join('');
+  }
+
+  /* ── InputBar ── */
+  function makeInput(slot, { animatePlaceholder }) {
+    slot.innerHTML = `
+      <div class="input" id="inputBar">
+        <div class="ph t-body" id="ph"><span id="phText"></span><span class="c"></span></div>
+        <textarea id="ta" rows="1" aria-label="Message the coach" readonly></textarea>
+        <div class="send-wrap"><button class="send" id="sendBtn" type="button" aria-label="Send">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button></div>
+      </div>`;
+    $('sendBtn').onclick = () => { if ($('ta').value.trim() && pending) pending.fire(); };
+    $('ph').hidden = !animatePlaceholder;
+    if (animatePlaceholder) startPlaceholder();
+  }
+  function startPlaceholder() {
+    stopPlaceholder();
+    const s = { p: 0, c: 0, del: false, t: null };
+    const tick = () => {
+      const phrase = PLACEHOLDERS[s.p], el = $('phText');
+      if (!el) return;
+      if (!s.del) {
+        s.c++; el.textContent = phrase.slice(0, s.c);
+        if (s.c === phrase.length) { s.t = setTimeout(() => { s.del = true; s.t = setTimeout(tick, 40); }, 2000); return; }
+        s.t = setTimeout(tick, 45);
+      } else {
+        s.c--; el.textContent = phrase.slice(0, s.c);
+        if (s.c === 0) { s.del = false; s.p = (s.p + 1) % PLACEHOLDERS.length; s.t = setTimeout(tick, 400); return; }
+        s.t = setTimeout(tick, 25);
+      }
+    };
+    s.t = setTimeout(tick, 600);
+    typing = s;
+  }
+  function stopPlaceholder() { if (typing) clearTimeout(typing.t); typing = null; const ph = $('ph'); if (ph) ph.hidden = true; }
+  function setInputDisabled(d) { const b = $('inputBar'); if (b) b.classList.toggle('disabled', d); }
+
+  async function typeInto(text, id) {
+    stopPlaceholder();
+    const ta = $('ta'), bar = $('inputBar');
+    bar.classList.add('focus');
+    for (let i = 1; i <= text.length; i++) { guard(id); ta.value = text.slice(0, i); await sleep(text.length > 60 ? 14 : 28); }
+    $('sendBtn').classList.add('ready');
+  }
+  function clearInput() { const ta = $('ta'); if (!ta) return; ta.value = ''; $('sendBtn').classList.remove('ready'); $('inputBar').classList.remove('focus'); }
+
+  /* ── thread helpers ── */
+  function append(html) {
+    const wrap = document.createElement('div');
+    wrap.innerHTML = html.trim();
+    const el = wrap.firstElementChild;
+    $('threadInner').appendChild(el);
+    const t = $('thread'); requestAnimationFrame(() => t.scrollTo({ top: t.scrollHeight, behavior: 'smooth' }));
+    return el;
+  }
+  const scrollDown = () => { const t = $('thread'); t.scrollTo({ top: t.scrollHeight, behavior: 'smooth' }); };
+  const note = html => append(`<div class="note anim-in">${html}</div>`);
+  const userRow = text => append(`<div class="row user anim-in"><div class="bubble user t-body"></div><span class="who">You</span></div>`).querySelector('.bubble').textContent = text;
+
+  async function coach(html, id, { think = 900 } = {}) {
+    const typingEl = append(`<div class="row coach anim-in"><div class="bubble coach"><div class="dots"><span class="dot"></span><span class="dot" style="animation-delay:.15s"></span><span class="dot" style="animation-delay:.3s"></span></div></div><span class="who">Coach</span></div>`);
+    await sleep(think); guard(id);
+    const bubble = typingEl.querySelector('.bubble');
+    bubble.classList.add('t-body');
+    // stream word by word, keeping markup intact
+    const tmp = document.createElement('div'); tmp.innerHTML = html;
+    bubble.innerHTML = '';
+    const texts = [];
+    (function clone(src, dst) {
+      src.childNodes.forEach(n => {
+        if (n.nodeType === 3) { const t = document.createTextNode(''); dst.appendChild(t); texts.push([t, n.textContent]); }
+        else { const c = n.cloneNode(false); dst.appendChild(c); clone(n, c); }
+      });
+    })(tmp, bubble);
+    const caret = document.createElement('span'); caret.className = 'caret';
+    for (const [node, full] of texts) {
+      node.parentNode.appendChild(caret);
+      const words = full.split(/(\s+)/);
+      let acc = '';
+      for (const w of words) { acc += w; node.textContent = acc; if (w.trim()) { await sleep(22); guard(id); } }
+    }
+    caret.remove(); scrollDown();
+    return bubble;
+  }
+  async function status(text, id, ms) {
+    const el = append(`<div class="status t-caption anim-in"><svg class="spin" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5A5.5 5.5 0 1 1 1.5 7" stroke="#2663EB" stroke-width="1.5" stroke-linecap="round"/></svg>${text}</div>`);
+    await sleep(ms); guard(id); el.remove();
+  }
+  async function userTurn(text, id, wait = 700) {
+    setInputDisabled(false);
+    await typeInto(text, id);
+    await gate(wait); guard(id);
+    clearInput(); userRow(text);
+  }
+
+  /* ── cards ── */
+  function eventCard() {
+    const stat = (l, v) => `<div><span class="t-caption stat-label">${l}</span><span class="t-body-bold stat-value">${v}</span></div>`;
+    return append(`<div class="row coach anim-in"><div class="card">
+      <div class="card-head"><span class="pill t-caption-bold">Granfondo</span><h3 class="t-h3">La Marmotte Granfondo Alpes</h3></div>
+      <div class="divider"></div>
+      <div class="stats">
+        ${stat('Date', 'July 5, 2026')}${stat('Distance', '~175 km')}${stat('Elevation', '~5,000 m')}
+        ${stat('Major climbs', "Glandon, Télégraphe, Galibier, Alpe d'Huez")}${stat('High point', '2,642 m')}
+      </div></div><span class="who">Coach</span></div>`);
+  }
+  function gapCards() {
+    const arrow = `<svg width="20" height="12" viewBox="0 0 20 12" fill="none"><path d="M1 6h16M14 1l5 5-5 5" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    const gap = (label, detail, cur, tgt, stretch, tgtLabel = 'Target') => `
+      <div class="card gap">
+        <div class="gap-head"><h4 class="t-body-bold">${label}</h4>${stretch ? '<span class="tag-stretch">Stretch</span>' : ''}</div>
+        <p class="t-caption gap-detail">${detail}</p>
+        <div class="arrow-row num">
+          <div><span class="t-h3 cur">${cur}</span><small>Current</small></div>${arrow}
+          <div><span class="t-h3 tgt">${tgt}</span><small>${tgtLabel}</small></div>
+        </div>
+      </div>`;
+    return append(`<div class="row coach anim-in"><div class="gaps">
+      ${gap('Climbing power', 'A sub-10 finish needs about 230 W at 70 kg. That is +19 W in 16 weeks: ambitious, but realistic with consistent training.', '3.01 W/kg', '3.3 W/kg', true)}
+      ${gap('Longest ride', 'At your target pace the event takes about 9h 45m. We build your longest ride to 7 hours over the next 10 weeks.', '5h 06m', '7h 00m', false)}
+      ${gap('Sustained climbing', 'The Glandon takes about 1h 40m at your pace, the Galibier from Valloire close to 2h. We extend climbing efforts at 75–80% of FTP.', '48 min', '90+ min', false)}
+      ${gap('Weekly volume', 'Built gradually to a peak in late May, then 2 easier weeks before the event.', '6h 10m', '10h', false, 'Peak')}
+    </div><span class="who">Coach</span></div>`);
+  }
+
+  /* ── AvailabilityWidget ── */
+  function availabilityWidget() {
+    const budgets = Object.fromEntries(DAYS.map(d => [d, 0]));
+    const el = append(`<div class="row coach anim-in"><div class="card avail">
+      <div><h3 class="t-h3">Weekly training hours</h3><p class="t-caption avail-sub">Drag each bar · <b class="num" id="availTotal">0.0h total per week</b></p></div>
+      <div class="days">${DAYS.map((d, i) => `<div class="day"><span class="t-caption-bold day-h" data-h="${d}">—</span><div class="track" data-d="${d}" role="slider" tabindex="0" aria-label="${DAY_SHORT[i]} hours" aria-valuemin="0" aria-valuemax="8" aria-valuenow="0"><div class="fill"></div></div><span class="t-caption-bold day-l">${DAY_SHORT[i]}</span></div>`).join('')}</div>
+      <button class="btn full" id="availBtn" type="button" disabled>Set availability</button>
+    </div></div>`);
+    const set = (d, h) => {
+      budgets[d] = h;
+      const tr = el.querySelector(`.track[data-d="${d}"]`), f = tr.querySelector('.fill'), pct = h / 8 * 100;
+      f.style.height = pct + '%'; f.style.borderRadius = pct >= 95 ? '20px' : '8px 8px 20px 20px';
+      tr.setAttribute('aria-valuenow', h);
+      el.querySelector(`[data-h="${d}"]`).textContent = h === 0 ? '—' : h + 'h';
+      const total = Object.values(budgets).reduce((a, b) => a + b, 0);
+      $('availTotal').textContent = total.toFixed(1) + 'h total per week';
+      $('availBtn').disabled = total === 0;
+    };
+    const hold = () => { if (pending) { pending.held = true; clearTimeout(pending.timer); } };
+    el.querySelectorAll('.track').forEach(tr => {
+      const d = tr.dataset.d;
+      const calc = y => { const r = tr.getBoundingClientRect(); return Math.round(Math.max(0, Math.min(1, (r.bottom - y) / r.height)) * 16) / 2; };
+      tr.addEventListener('pointerdown', e => { hold(); tr.setPointerCapture(e.pointerId); tr.classList.add('dragging'); set(d, calc(e.clientY)); });
+      tr.addEventListener('pointermove', e => { if (tr.hasPointerCapture(e.pointerId)) set(d, calc(e.clientY)); });
+      tr.addEventListener('pointerup', e => { tr.classList.remove('dragging'); });
+      tr.addEventListener('keydown', e => {
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { e.preventDefault(); hold(); set(d, Math.max(0, Math.min(8, budgets[d] + (e.key === 'ArrowUp' ? .5 : -.5)))); }
+      });
+    });
+    return { el, budgets, set };
+  }
+
+  /* ── the script ── */
+  async function run() {
+    const id = ++runId;
+    pending = null; stopPlaceholder();
+    $('endOverlay').hidden = true;
+    $('shell').hidden = true; $('syncScreen').hidden = false;
+    $('home').hidden = false; $('chat').hidden = true;
+    $('threadInner').innerHTML = '';
+    $('chatInputSlot').innerHTML = ''; $('homeInputSlot').innerHTML = '';
+
+    // Strava sync
+    if (!skipSync) {
+      setPhase(0);
+      $('syncCheck').hidden = true; $('syncProgress').hidden = false;
+      $('syncTitle').textContent = 'Loading your recent rides';
+      $('syncSub').textContent = 'Pulling your last 3 months of Strava data…';
+      $('syncBar').style.width = '0%'; $('syncCount').textContent = 'Connecting…'; $('rideLine').textContent = '';
+      await sleep(700); guard(id);
+      const total = 47;
+      for (let n = 1; n <= total; n++) {
+        $('syncBar').style.width = Math.max(5, Math.round(n / total * 99)) + '%';
+        $('syncCount').textContent = `${n} ride${n > 1 ? 's' : ''} loaded`;
+        const r = RIDES[Math.floor((n - 1) / 4) % RIDES.length];
+        $('rideLine').textContent = `${r[0]} · ${r[1]} · ${r[2]}`;
+        await sleep(55); guard(id);
+      }
+      $('syncCheck').hidden = false; $('syncProgress').hidden = true; $('rideLine').textContent = '';
+      $('syncTitle').textContent = 'All set';
+      $('syncSub').textContent = 'Found 47 rides. Let’s get started.';
+      await gate(1600); guard(id);
+    }
+
+    // Home
+    $('syncScreen').hidden = true; $('shell').hidden = false;
+    setPhase(1);
+    makeInput($('homeInputSlot'), { animatePlaceholder: true });
+    await gate(1400); guard(id);
+    await typeInto('La Marmotte in July', id);
+    await gate(800); guard(id);
+
+    // Chat
+    $('home').hidden = true; $('chat').hidden = false;
+    makeInput($('chatInputSlot'), { animatePlaceholder: false });
+    setInputDisabled(true);
+    note('Power check passed: 44 of 47 rides have power. Coach already knows <b>FTP 211 W</b> · <b>70 kg</b> (3.01 W/kg) · <b>6h 10m/week</b> · longest ride <b>5h 06m</b> · longest steady climb <b>48 min at 194 W</b>');
+    userRow('La Marmotte in July');
+    await coach('<p>Big one. La Marmotte Alpes is on Sunday 5 July: 175 km and about 5,000 m of climbing over the Glandon, Télégraphe, Galibier and up to Alpe d’Huez. Is this the one?</p>', id);
+    eventCard();
+    await gate(1400); guard(id);
+
+    await userTurn('yes that one', id);
+    await coach('<p>Good. That gives us 16 weeks. What would a good day look like for you: getting round, a time goal, or something else?</p>', id);
+    await gate(900); guard(id);
+
+    await userTurn("honestly I'd love to finish under 10 hours. a friend did it in 10:40 last year and said Alpe d'Huez destroyed him", id);
+    await coach('<p>Under 10 hours is a clear target. Have you ridden in the Alps before, or done climbs longer than an hour?</p>', id);
+    await gate(900); guard(id);
+
+    await userTurn('done some climbs in the Pyrenees years ago but nothing recently. longest climbs here are like 45 min', id);
+    await coach('<p>That matches your Strava. Your longest steady climb this year is 48 minutes at 194 W.</p><p>One more check: I’ve got you at 70 kg. Is that still about right?</p>', id);
+    note('FTP isn’t asked: the Strava estimate (222 W 20-min effort on 22 Feb) is solid.');
+    await gate(1100); guard(id);
+
+    await userTurn('yep, 70', id);
+    setInputDisabled(true);
+
+    // Assessment
+    setPhase(2);
+    note('<code>assess_fitness</code> runs on the server. Every number below is computed there; the coach only presents them.');
+    await status('Analysing your rides against La Marmotte…', id, 1600);
+    await coach('<p>Here’s where you are against what a sub-10 La Marmotte asks for.</p>', id, { think: 500 });
+    gapCards();
+    await gate(2600); guard(id);
+    await coach('<p><strong>What’s already working.</strong> You’ve ridden 4 times a week for 10 of the last 12 weeks, and on your 5-hour Sintra loop your power held steady to the end. The base is there.</p><p>The biggest thing between you and sub-10 is time on long climbs, not raw power.</p>', id);
+    await gate(1400); guard(id);
+
+    await userTurn("ok that's a lot but makes sense. the 7 hour ride is scary", id);
+    await coach('<p>It comes late in the plan, and you’ll have ridden 6 hours a few times before it. Let’s look at your week.</p>', id);
+    setInputDisabled(true);
+
+    // Availability
+    setPhase(3);
+    note('Server forces <code>show_availability</code>. The stream pauses until Marta submits.');
+    await sleep(500); guard(id);
+    const w = availabilityWidget();
+    await sleep(500); guard(id);
+    for (const d of DAYS) { if (pending && pending.held) break; w.set(d, PRESET[d]); await sleep(220); guard(id); }
+    const submitted = new Promise(r => { $('availBtn').onclick = () => { if (pending) pending.fire(); r(); }; });
+    await gate(1800); guard(id);
+    submitted.catch(() => {});
+    // lock widget
+    const btn = $('availBtn'); btn.outerHTML = `<div class="confirmed t-caption-bold"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#DBF8E6"/><path d="M5 8l2 2 4-4" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Saved</div>`;
+    w.el.querySelectorAll('.track').forEach(t => { t.style.pointerEvents = 'none'; t.removeAttribute('tabindex'); });
+    const b = w.budgets, tot = Object.values(b).reduce((a, c) => a + c, 0);
+    const days = DAYS.filter(d => b[d] > 0).map(d => DAY_SHORT[DAYS.indexOf(d)]);
+    const longDay = DAYS.reduce((m, d) => b[d] > b[m] ? d : m, 'saturday');
+    const longName = longDay[0].toUpperCase() + longDay.slice(1);
+    userRow(`${tot.toFixed(1).replace('.0', '')}h a week · ${days.join(', ')}`);
+    note('Availability saved to <code>athlete.available_days</code> right away, before the end of the chat.');
+    const fits = tot >= 9.5;
+    await coach(`<p>${tot.toFixed(1).replace('.0', '')} hours ${fits ? 'covers the peak weeks' : 'is tighter than the ~10h peak, so the long days carry more of the load'}. We’ll start nearer ${Math.min(7, tot).toFixed(1).replace('.0', '')} and build.</p><p>For the 6–7 hour rides, could you sometimes give a ${longName} more than ${b[longDay]} hours?</p>`, id);
+    await gate(1000); guard(id);
+
+    await userTurn('yes, a few times is fine if I plan ahead', id);
+    await coach(`<p>Perfect. Those go on ${longName}s roughly every three weeks, with an easy day after.</p>`, id);
+    await gate(1000); guard(id);
+
+    // Confirm
+    setPhase(4);
+    await coach(`<p>Here’s the plan:</p><ul>
+      <li><strong>Goal:</strong> La Marmotte Alpes, 5 July, under 10 hours</li>
+      <li><strong>Main focus:</strong> long climbs, building to 90+ minutes of sustained climbing</li>
+      <li><strong>Also building:</strong> FTP 211 → ~230 W, longest ride 5h → 7h</li>
+      <li><strong>Your week:</strong> sessions on ${days.filter(d => d !== longName.slice(0,3)).join(', ')}, the long ride on ${longName}. About 7h a week now, peaking around 10h in late May, then 2 easier weeks before the event.</li>
+    </ul><p>Ready for me to build it?</p>`, id, { think: 1100 });
+    await gate(1600); guard(id);
+
+    await userTurn("let's go", id);
+    setInputDisabled(true);
+
+    // Plan
+    setPhase(5);
+    note('<code>finalize_onboarding</code> checks goal, event details, objective, weight, FTP, assessment and availability, then runs the plan pipeline.');
+    await status('Building your plan…', id, 2000);
+    const last = await coach('<p>Done. Your 16-week La Marmotte plan is ready. Week 1 starts Tuesday with a 75-minute session to set your baseline. See you on the bike.</p>', id, { think: 400 });
+    const row = last.parentElement;
+    const cta = document.createElement('button'); cta.className = 'btn'; cta.type = 'button'; cta.textContent = 'See my plan';
+    cta.style.marginTop = '8px'; cta.onclick = () => { $('endOverlay').hidden = false; };
+    row.insertBefore(cta, row.querySelector('.who'));
+    scrollDown();
+    setPhase(6);
+  }
+
+  const start = () => run().catch(e => { if (!(e instanceof Cancel)) console.error(e); });
+
+  $('playBtn').onclick = () => {
+    autoplay = !autoplay;
+    $('playBtn').textContent = autoplay ? 'Pause' : 'Play';
+    if (pending) { if (autoplay) { pending.ms = 300; pending.arm(); } else clearTimeout(pending.timer); }
+  };
+  $('nextBtn').onclick = () => { if (pending) pending.fire(); };
+  $('restartBtn').onclick = start;
+  $('endRestart').onclick = start;
+  $('endClose').onclick = () => { $('endOverlay').hidden = true; };
+  $('notesToggle').onchange = e => document.body.classList.toggle('hide-notes', !e.target.checked);
+  if (clean) document.addEventListener('keydown', e => {
+    if (e.key === ' ') { e.preventDefault(); $('playBtn').click(); }
+    else if (e.key === 'ArrowRight') $('nextBtn').click();
+    else if (e.key === 'r' || e.key === 'R') start();
+  });
+
+  start();
+})();
+</script>
+
+</body>
+</html>
