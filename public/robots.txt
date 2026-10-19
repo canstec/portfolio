@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cansutecimer.com/sitemap-index.xml
