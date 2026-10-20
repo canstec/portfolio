@@ -505,6 +505,7 @@
     .b81-live { position: relative; width: 264px; height: 574px; flex: none; overflow: hidden; background: #000; }
     .b81-live iframe { display: block; width: 402px; height: 874px; border: 0; transform: scale(.65672); transform-origin: 0 0; pointer-events: none; }
     /* motion: four clips, one per click; the newest plays, earlier ones stop and dim */
+    .title.one-line { max-width: none; white-space: nowrap; }
     .b81-clips { display: flex; justify-content: space-between; margin-top: 40px; padding: 0 40px; }
     .b81-clips figure { width: 240px; display: flex; flex-direction: column; gap: 18px; }
     .b81-clips video { display: block; width: 100%; height: auto; aspect-ratio: 600 / 1340; background: #000; transition: opacity .3s ease; }
@@ -1271,7 +1272,7 @@
 
       <section class="slide dark" id="beat81-motion" data-title="Beat81: animation in the experience" data-group="Beat81">
         <div class="meta"><span>Beat81 Power Zones</span><span>Motion</span></div>
-        <h2 class="title">Animation as a core part of the experience.</h2>
+        <h2 class="title one-line">Animation as a core part of the experience.</h2>
         <div class="b81-clips">
           <figure class="step"><video data-solo src="/videos/b81-max-test.mp4" muted loop playsinline preload="auto" aria-label="Max power test: countdown, then the average power ring fills over three minutes"></video><figcaption class="b81-cap">Max power test</figcaption></figure>
           <figure class="step"><video data-solo src="/videos/b81-power-goal.mp4" muted loop playsinline preload="auto" aria-label="Choosing today’s test as the Power Goal, then the six zones fill in"></video><figcaption class="b81-cap">Setting your zones</figcaption></figure>
