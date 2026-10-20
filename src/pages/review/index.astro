@@ -52,7 +52,9 @@
       --script: 'Caveat', 'Bradley Hand', cursive;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; background: #dedce8; }
+    html, body { height: 100%; background: #dedce8; transition: background-color .35s ease; }
+    /* letterbox matches the slide: dark around the dark Beat81 slides */
+    html.dark-slide, html.dark-slide body { background: #121117; }
     body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: antialiased; overflow: hidden; }
 
     /* ---------- Stage ---------- */
@@ -1316,6 +1318,7 @@
       function show(i, { fromEnd = false, nav = 'push' } = {}) {
         cur = Math.max(0, Math.min(slides.length - 1, i));
         slides.forEach((s, j) => s.classList.toggle('is-active', j === cur));
+        document.documentElement.classList.toggle('dark-slide', slides[cur].classList.contains('dark'));
         steps(slides[cur]).forEach(st => st.classList.toggle('shown', fromEnd));
         document.getElementById('count').textContent = `${cur + 1} / ${slides.length}`;
         document.getElementById('progress').style.width = `${((cur + 1) / slides.length) * 100}%`;
