@@ -472,6 +472,45 @@
     .heads h3 { font-family: var(--display); font-size: 32px; font-weight: 800; letter-spacing: -.04em; }
     .heads p { font-size: 16px; line-height: 1.5; color: var(--ink-2); margin-top: 8px; }
 
+
+    /* ---------- Beat81 extras (after the close): same system, dark mode ----------
+       Black in-workout screens sit on a near-black ground; violet lifts so it still reads. */
+    .slide.dark {
+      --paper: #121117; --white: #1b1a22; --ink: #f4f3f8; --ink-2: #a9a7b8; --ink-3: #6f6c80;
+      --line: #2a2833; --line-strong: #3a3846; --violet: #8f7bff; --violet-soft: #2a2350; --hand: #b3a4ff;
+      color: var(--ink);
+    }
+    .b81-scr { display: block; width: 100%; height: auto; border-radius: 26px; border: 1px solid rgba(255, 255, 255, .09); box-shadow: 0 30px 70px rgba(0, 0, 0, .55); background: #000; }
+    .b81-cap { font-size: 16px; font-weight: 700; color: var(--ink-2); text-align: center; }
+    /* intro: case-cover layout with two screens on the right */
+    .b81-cover h2 { margin-top: 142px; }
+    .b81-cover .sub { margin-top: 58px; max-width: 760px; }
+    .b81-cover .hand-note { top: 720px; }
+    .b81-cover .b81-scr { position: absolute; width: 238px; }
+    .b81-cover .b81-scr.a { left: 1000px; top: 300px; }
+    .b81-cover .b81-scr.b { left: 1270px; top: 196px; }
+    /* journey: six screens in a row */
+    .b81-row { display: flex; justify-content: space-between; align-items: flex-start; margin-top: auto; margin-bottom: 8px; }
+    .b81-row figure { width: 206px; display: flex; flex-direction: column; gap: 18px; }
+    /* explorations: groups of screens, captioned per group */
+    .b81-dirs { display: flex; justify-content: center; align-items: flex-start; gap: 56px; margin-top: auto; margin-bottom: 8px; }
+    .b81-dirs figure { display: flex; flex-direction: column; gap: 18px; }
+    .b81-dirs .pair { display: flex; gap: 20px; }
+    .b81-dirs .b81-scr { width: 218px; }
+    /* prototype: four static states, then the live prototype */
+    .b81-proto { display: flex; align-items: center; justify-content: space-between; margin-top: auto; margin-bottom: auto; padding-top: 24px; }
+    .b81-states { display: flex; gap: 20px; }
+    .b81-states figure { width: 186px; display: flex; flex-direction: column; gap: 16px; }
+    .b81-live { position: relative; width: 270px; height: 587px; flex: none; border-radius: 34px; overflow: hidden; border: 1px solid rgba(255, 255, 255, .09); box-shadow: 0 30px 70px rgba(0, 0, 0, .55); background: #000; margin-right: 40px; }
+    .b81-live iframe { display: block; width: 402px; height: 874px; border: 0; transform: scale(.67164); transform-origin: 0 0; pointer-events: none; }
+    .b81-note { position: absolute; left: 950px; top: 470px; font-weight: 700; font-size: 36px; transform: rotate(-3deg); }
+    .b81-note svg { margin: 8px 0 0 70px; }
+    /* motion: four clips, one per click; the newest plays, earlier ones stop and dim */
+    .b81-clips { display: flex; justify-content: space-between; margin-top: auto; margin-bottom: 8px; padding: 0 40px; }
+    .b81-clips figure { width: 248px; display: flex; flex-direction: column; gap: 18px; }
+    .b81-clips video { display: block; width: 100%; height: auto; aspect-ratio: 600 / 1304; border-radius: 30px; border: 1px solid rgba(255, 255, 255, .09); box-shadow: 0 30px 70px rgba(0, 0, 0, .55); background: #000; transition: opacity .3s ease; }
+    .b81-clips video.idle { opacity: .45; }
+
     /* build steps: reveal one at a time when presenting; everything visible without JS */
     .js .step { opacity: 0; transform: translateY(8px); transition: opacity .4s ease, transform .4s ease; }
     .js .step.shown { opacity: 1; transform: none; }
@@ -1160,6 +1199,100 @@
         <div class="hand thanks-note">Questions?</div>
       </section>
 
+      <!-- Beat81 extras: kept after the close, shown only if visual design or motion comes up -->
+      <section class="slide case-cover b81-cover dark" id="beat81" data-title="Beat81 Power Zones" data-group="Beat81">
+        <div class="kicker">Beat81 / Visual &amp; motion design</div>
+        <h2>Beat81<br />Power Zones</h2>
+        <p class="sub">Designing the in-workout mobile app for a power-based cycling class.</p>
+        <img class="b81-scr a" src="/review/b81-j3-goal.png" alt="Your Power Goal: 239 W, with today’s six zones" />
+        <img class="b81-scr b" src="/review/b81-j5-above.png" alt="In the workout: 175 W against a Z4 target, with cadence and resistance" />
+        <div class="hand hand-note">Simple for a first-timer.<br />Motion does the explaining.</div>
+        <aside class="notes-src" hidden>
+          <ul>
+            <li>Freelance, sole designer on the Power Zones cycling format, about four weeks (June – July 2026).</li>
+            <li>The class shifts the goal from raising heart rate to hitting power zones. Zones come from a 3-minute max power test at the start of the ride.</li>
+            <li>The customer is here for competition, the room and the points, not performance training. So: simple enough for a beginner, and design and motion do the teaching instead of copy.</li>
+          </ul>
+        </aside>
+      </section>
+
+      <section class="slide dark" id="beat81-journey" data-title="Beat81: the ride in key screens" data-group="Beat81">
+        <div class="meta"><span>Beat81 Power Zones</span><span>Key screens</span></div>
+        <h2 class="title">A ride, in six screens.</h2>
+        <div class="b81-row">
+          <figure><img class="b81-scr" src="/review/b81-j1-warmup.png" alt="Warm up: live power with the six zones, cadence and resistance" /><figcaption class="b81-cap">Warm up</figcaption></figure>
+          <figure><img class="b81-scr" src="/review/b81-j2-maxtest.png" alt="Max power test: average power in a progress ring, with the timer" /><figcaption class="b81-cap">Max power test</figcaption></figure>
+          <figure><img class="b81-scr" src="/review/b81-j3-goal.png" alt="Your Power Goal: 239 W and today’s zones" /><figcaption class="b81-cap">Your Power Goal</figcaption></figure>
+          <figure><img class="b81-scr" src="/review/b81-j4-upcoming.png" alt="Upcoming section: heavy hill climbs, its intervals and zones" /><figcaption class="b81-cap">Up next</figcaption></figure>
+          <figure><img class="b81-scr" src="/review/b81-j5-above.png" alt="In the workout: power above the Z4 target" /><figcaption class="b81-cap">In the workout</figcaption></figure>
+          <figure><img class="b81-scr" src="/review/b81-j6-cooldown.png" alt="Cool-down: a timer ring around a heart" /><figcaption class="b81-cap">Cool-down</figcaption></figure>
+        </div>
+        <aside class="notes-src" hidden>
+          <ul>
+            <li>The user journey through the key static screens: warm up, the max power test, the Power Goal and zones, what’s coming up, riding in a section, cool-down.</li>
+            <li>Point at the choices: one big number, type scale, spacing, the zone colours as a continuous scale.</li>
+          </ul>
+        </aside>
+      </section>
+
+      <section class="slide dark" id="beat81-directions" data-title="Beat81: exploring layout and hierarchy" data-group="Beat81">
+        <div class="meta"><span>Beat81 Power Zones</span><span>Directions</span></div>
+        <h2 class="title">Exploring layout and hierarchy.</h2>
+        <div class="b81-dirs">
+          <figure><img class="b81-scr" src="/review/b81-d1-original.png" alt="The original in-workout screen: cadence and power zone cards" /><figcaption class="b81-cap">Original</figcaption></figure>
+          <figure class="step"><img class="b81-scr" src="/review/b81-d2-legibility.png" alt="Power zone and cadence cards with targets and an at-target marker" /><figcaption class="b81-cap">Legibility &amp; information</figcaption></figure>
+          <figure class="step"><div class="pair"><img class="b81-scr" src="/review/b81-d3-vertical.png" alt="Power as the focus, with a vertical zone column" /><img class="b81-scr" src="/review/b81-d4-vertical-zone.png" alt="Power as the focus, vertical zones with a position marker" /></div><figcaption class="b81-cap">Power as the focus, vertical</figcaption></figure>
+          <figure class="step"><img class="b81-scr" src="/review/b81-d5-horizontal.png" alt="Power as the focus, with a horizontal zone bar" /><figcaption class="b81-cap">Horizontal</figcaption></figure>
+        </div>
+        <aside class="notes-src" hidden>
+          <ul>
+            <li>Alternatives in both layout and visual hierarchy, one click per direction.</li>
+            <li>Original → improving legibility and information → one metric as the focus (power), vertical → horizontal.</li>
+          </ul>
+        </aside>
+      </section>
+
+      <section class="slide dark" id="beat81-prototype" data-title="Beat81: deciding with a prototype" data-group="Beat81">
+        <div class="meta"><span>Beat81 Power Zones</span><span>Prototyping</span></div>
+        <h2 class="title">Deciding with a prototype.</h2>
+        <div class="b81-proto">
+          <div class="b81-states">
+            <figure><img class="b81-scr" src="/review/b81-p1-below.png" alt="Vertical zones: power below the Z3 target" /><figcaption class="b81-cap">Below</figcaption></figure>
+            <figure><img class="b81-scr" src="/review/b81-p2-at.png" alt="Vertical zones: power at the Z3 target" /><figcaption class="b81-cap">At target</figcaption></figure>
+            <figure><img class="b81-scr" src="/review/b81-p3-at-top.png" alt="Vertical zones: power at the top of Z3" /><figcaption class="b81-cap">Top of zone</figcaption></figure>
+            <figure><img class="b81-scr" src="/review/b81-p4-above.png" alt="Vertical zones: power above, in Z4" /><figcaption class="b81-cap">Above</figcaption></figure>
+          </div>
+          <div class="b81-live step"><iframe data-src="/review/b81-zone-proto.html?clean" title="Vertical zone prototype, playing a simulated ride" tabindex="-1"></iframe></div>
+        </div>
+        <div class="hand b81-note step">In motion,<br />it got hectic.
+          <svg width="110" height="50" viewBox="0 0 110 50" fill="none" aria-hidden="true"><path d="M4 12 C 36 40, 72 40, 102 22" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/><path d="M86 14 L 103 21 L 94 37" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <aside class="notes-src" hidden>
+          <ul>
+            <li>Static, each state of the vertical layout looks clear.</li>
+            <li>Built a working prototype with Claude Code (click to start it). In a real class power changes every second: the marker, zone highlight and number all move at once, and the screen gets hectic.</li>
+            <li>Seeing it move made the decision much easier than debating static screens.</li>
+          </ul>
+        </aside>
+      </section>
+
+      <section class="slide dark" id="beat81-motion" data-title="Beat81: motion that explains" data-group="Beat81">
+        <div class="meta"><span>Beat81 Power Zones</span><span>Motion</span></div>
+        <h2 class="title">Motion that explains.</h2>
+        <div class="b81-clips">
+          <figure class="step"><video data-solo src="/videos/b81-max-test.mp4" muted loop playsinline preload="auto" aria-label="Max power test: countdown, then the average power ring fills over three minutes"></video><figcaption class="b81-cap">Max power test</figcaption></figure>
+          <figure class="step"><video data-solo src="/videos/b81-power-goal.mp4" muted loop playsinline preload="auto" aria-label="Choosing today’s test as the Power Goal, then the six zones fill in"></video><figcaption class="b81-cap">Setting your zones</figcaption></figure>
+          <figure class="step"><video data-solo src="/videos/b81-gear.mp4" muted loop playsinline preload="auto" aria-label="Resistance tile: the gear turns to cue more or less resistance"></video><figcaption class="b81-cap">Turn the gear</figcaption></figure>
+          <figure class="step"><video data-solo src="/videos/b81-cooldown.mp4" muted loop playsinline preload="auto" aria-label="Recovery points count up as heart rate drops, then the cool-down ring, then Good work"></video><figcaption class="b81-cap">Recovery to cool-down</figcaption></figure>
+        </div>
+        <aside class="notes-src" hidden>
+          <ul>
+            <li>Key moments where motion did the communicating, one click each. The newest plays; earlier ones stop.</li>
+            <li>Max power test · setting the zones from the Power Goal · the gear turning to cue resistance · recovery into cool-down.</li>
+          </ul>
+        </aside>
+      </section>
+
     </main>
   </div>
 
@@ -1201,7 +1334,7 @@
           if (nav === 'push') history.pushState(null, '', hash);
           else if (nav === 'replace') history.replaceState(null, '', hash);
         }
-        slides.forEach((sl, j) => sl.querySelectorAll('video').forEach(v => { if (j === cur) { v.currentTime = 0; v.play().catch(() => {}); } else v.pause(); }));
+        slides.forEach((sl, j) => sl.querySelectorAll('video:not([data-solo])').forEach(v => { if (j === cur) { v.currentTime = 0; v.play().catch(() => {}); } else v.pause(); }));
         stage.querySelectorAll('.flip[aria-expanded="true"]').forEach(b => flip(b, false));
         syncFrames();
         stage.querySelectorAll('.hp').forEach(h => hpShow(h, 'str'));
@@ -1221,6 +1354,15 @@
           if (on && !el._run) { el._run = { dead: false }; live[el.dataset.live](el, el._run).catch(() => {}); }
           if (!on && el._run) { el._run.dead = true; el._run = null; resetLive(el); }
         }));
+        // solo clips: only the newest shown one plays; earlier ones stop where they are and dim
+        slides.forEach((sl, j) => {
+          const vs = [...sl.querySelectorAll('video[data-solo]')];
+          const on = vs.filter(v => visibleNow(v, j)), last = on.at(-1);
+          vs.forEach(v => {
+            if (v === last) { if (v.paused) { if (v.classList.contains('idle') === false) v.currentTime = 0; v.play().catch(() => {}); } v.classList.remove('idle'); }
+            else { v.pause(); v.classList.toggle('idle', on.includes(v)); if (!on.includes(v)) v.currentTime = 0; }
+          });
+        });
       }
 
       // ---- Final onboarding phones: small scripted loops ----

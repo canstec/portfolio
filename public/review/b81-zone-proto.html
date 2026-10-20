@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Beat81 — Power Zones (Variant A · v2 · zone-cell sidebar)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;600;700;800;900&family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#000;
+    --card-border:#1a1820;
+    --tile:#15141a;
+    --blue:#3ca3f9;
+    --text-tertiary:#a6a6a6;
+    --text-muted:#8e8e93;
+  }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-font-smoothing:antialiased;}
+  body{
+    background:radial-gradient(120% 80% at 50% 0%, #16161b 0%, #060608 60%, #000 100%);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    gap:22px;
+    padding:34px 16px 60px;
+    font-family:'Inter',system-ui,sans-serif;
+    color:#fff;
+  }
+
+  /* ---------- Phone frame ---------- */
+  .phone{
+    width:402px;
+    height:874px;
+    background:#000;
+    border-radius:46px;
+    border:9px solid #1c1c20;
+    box-shadow:0 30px 90px rgba(0,0,0,.7), inset 0 0 0 2px #2a2a30;
+    overflow:hidden;
+    position:relative;
+    flex:0 0 auto;
+  }
+  .screen{
+    position:absolute; inset:0;
+    background:#000;
+    display:flex; flex-direction:column;
+    gap:8px;
+    padding:16px 8px;
+  }
+
+  /* ---------- Header ---------- */
+  .header{display:flex; flex-direction:column; width:100%;}
+  .header-top{display:flex; align-items:center; justify-content:space-between; padding:30px 20px;}
+  .header-top h1{font-family:'Archivo Black',sans-serif; font-size:18px; line-height:1;}
+  .close{width:14px; height:14px; color:#fff;}
+  .divider{height:1px; width:100%; background:#2a2730;}
+
+  /* ---------- Top section ---------- */
+  .top-section{display:flex; flex-direction:column; gap:16px; padding:16px;}
+  .top-section .label{
+    font-weight:800; font-size:13px; letter-spacing:2.6px; text-transform:uppercase;
+  }
+  .top-row{display:flex; align-items:flex-end; justify-content:space-between; height:62px; padding:0 8px;}
+  .profile-graph{position:relative; width:118px; height:40px;}
+  .profile-graph .bars{
+    position:absolute; left:0; bottom:0;
+    display:flex; align-items:flex-end; gap:4px; height:100%;
+  }
+  .profile-graph .bars.base{opacity:.4;}
+  .profile-graph .bars.fill{clip-path:inset(0 100% 0 0);} /* JS reveals L→R */
+  .pbar{border-radius:4px; flex:0 0 auto;}
+  .pbar.z3{width:45px; height:31px; background:#1ff43b;}
+  .pbar.z4{width:20px; height:40px; background:#ffcf38;}
+  .time-block{display:flex; flex-direction:column; align-items:flex-end; justify-content:space-between; height:72px; width:131px;}
+  .time-block .time{font-family:'Archivo',sans-serif; font-weight:900; font-size:36px; line-height:1;}
+  .time-block .sub{font-weight:800; font-size:13px; letter-spacing:2.6px; text-transform:uppercase; color:var(--text-tertiary);}
+
+  /* ---------- Power card ---------- */
+  .power-card{
+    flex:1 0 0; min-height:0;
+    display:flex; align-items:center; gap:10px;
+    border:3px solid var(--card-border);
+    border-radius:16px;
+    padding:16px;
+    width:100%;
+  }
+  .panel-watts{
+    flex:1 0 0; min-width:0; height:100%;
+    background:#000; border-radius:8px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;
+  }
+  .panel-watts .ph{display:flex; align-items:center; gap:8px;}
+  .panel-watts .ph svg{width:20px; height:20px;}
+  .panel-watts .ph span{font-family:'Inter',sans-serif; font-weight:600; font-size:16px; letter-spacing:1.6px; color:#a6a6a6; text-transform:uppercase;}
+  .watts-value{
+    font-family:'Archivo Black',sans-serif;
+    font-size:100px; line-height:.9; letter-spacing:-2.2px; color:#fff;
+    display:inline-flex; align-items:flex-end;
+  }
+  .watts-value .pct{font-size:30px; line-height:1; letter-spacing:0; transform:translateY(-10px); margin-left:3px;}
+  .target-block{display:flex; flex-direction:column; align-items:center; gap:8px;}
+  .target-block .t1{font-weight:800; font-size:14px; letter-spacing:1.4px;}
+  .target-block .t2{font-family:'Archivo',sans-serif; font-weight:800; font-size:24px; text-transform:uppercase;}
+
+  /* ---------- Zone sidebar (v2: rounded cells + label, sliding position bar) ---------- */
+  .sidebar{
+    width:80px; height:100%;
+    display:flex; flex-direction:column; gap:4px;
+    position:relative;
+  }
+  .zone-row{
+    flex:1 1 0; min-height:0;
+    display:flex; align-items:center; gap:10px; width:100%;
+    transition:flex-grow .55s cubic-bezier(.22,1,.36,1);
+  }
+  .zone-row.expanded{ flex-grow:2.46; }   /* target zone grows to ~120px when you're in it */
+  .zone-cell{
+    flex:1 1 0; min-width:0; height:100%;
+    border-radius:8px;
+    background:#211f28; border:1px solid #2b2a33;
+    transition:background-color .3s ease, border-color .3s ease;
+  }
+  .zone-row.target .zone-cell{ background:#121115; border-color:rgba(255,255,255,0.7); }
+  .zone-row.active .zone-cell{ background:var(--c30); border-color:var(--c); }
+  .zone-label{
+    flex:0 0 30px; width:30px; text-align:right;
+    font-family:'Inter',sans-serif; font-weight:800; font-size:18px; color:#fff;
+  }
+  /* exact-position indicator — slides vertically within the current cell */
+  .pos-bar{
+    position:absolute; left:20px; width:48px; height:4px;
+    border-radius:99px; background:#fff;
+    box-shadow:0 0 10px 1px #fff;
+    transform:translate(-50%,-50%);
+    pointer-events:none; z-index:5;
+  }
+
+  /* ---------- Metric tiles ---------- */
+  .metrics{display:flex; gap:8px; height:180px; width:100%;}
+  .tile{
+    flex:1 0 0; min-width:0; height:100%;
+    background:var(--tile); border-radius:16px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px;
+    padding:0 16px 0 32px;
+  }
+  .tile .th{display:flex; align-items:center; gap:4px;}
+  .tile .th svg{color:var(--text-muted);}
+  .tile .th span{font-weight:600; font-size:14px; letter-spacing:1.4px; color:var(--text-muted);}
+  .tile .big{display:flex; align-items:center; gap:4px;}
+  .tile .big .num{font-weight:800; font-size:44px; letter-spacing:2px; color:#fff;}
+  .tile .big .pct{font-weight:800; font-size:14px; color:#fff;}
+  .tile .chev{width:32px; height:32px; color:#1ff43b;}
+  .tile .foot{font-weight:800; font-size:16px; letter-spacing:1.6px; color:#fff;}
+  .tile .foot.hidden{opacity:0;}
+
+  .home-indicator{display:flex; align-items:center; justify-content:center; height:23px; width:100%;}
+  .home-indicator div{width:100px; height:8px; border-radius:8px; background:#efebe7;}
+
+  /* ---------- Prototype controls ---------- */
+  .controls{
+    width:402px; max-width:100%;
+    background:#101015; border:1px solid #23232b; border-radius:18px;
+    padding:18px 18px 20px;
+    display:flex; flex-direction:column; gap:14px;
+    font-family:'Inter',sans-serif;
+  }
+  .controls .ctitle{font-size:11px; letter-spacing:1.4px; text-transform:uppercase; color:#6a6a72;}
+  .controls .row{display:flex; align-items:center; gap:12px;}
+  .controls button{
+    appearance:none; border:none; cursor:pointer;
+    background:#2663EB; color:#fff;
+    font-family:inherit; font-weight:700; font-size:14px;
+    padding:10px 18px; border-radius:10px;
+    transition:filter .15s ease, transform .05s ease;
+  }
+  .controls button:hover{filter:brightness(1.1);}
+  .controls button:active{transform:scale(.97);}
+  .controls button.ghost{background:#23232b;}
+  .readout{
+    margin-left:auto; font-weight:600; font-size:13px; color:#c8c8d0;
+    display:flex; align-items:center; gap:8px;
+  }
+  .readout .dot{width:10px; height:10px; border-radius:50%; background:#40f43c; box-shadow:0 0 8px currentColor;}
+  .readout .tag{
+    font-weight:800; font-size:12px; padding:2px 8px; border-radius:6px;
+    background:#23232b;
+  }
+  .slider-row label{font-size:12px; color:#8a8a92; min-width:74px;}
+  input[type=range]{
+    -webkit-appearance:none; appearance:none;
+    flex:1; height:6px; border-radius:6px;
+    background:linear-gradient(90deg,#48c2ff,#42ffff,#40f43c,#ffcf38,#fe9339,#ff4949);
+    outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; appearance:none;
+    width:20px; height:20px; border-radius:50%;
+    background:#fff; border:3px solid #2663EB; cursor:pointer;
+    box-shadow:0 2px 6px rgba(0,0,0,.4);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:20px; height:20px; border-radius:50%;
+    background:#fff; border:3px solid #2663EB; cursor:pointer;
+  }
+  .hint{font-size:11px; color:#55555c; line-height:1.5;}
+</style>
+<!-- Deck embed: ?clean shows only the phone screen (no frame, no demo controls) -->
+<script>if (/[?&]clean\b/.test(location.search)) document.documentElement.classList.add('clean');</script>
+<style>
+  .clean body{padding:0; background:#000; display:block; min-height:0; overflow:hidden;}
+  .clean .controls{display:none;}
+  .clean .phone{border:0; border-radius:0; box-shadow:none;}
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="screen">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-top">
+        <h1>Power Zones (Ride 45)</h1>
+        <svg class="close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </div>
+      <div class="divider"></div>
+    </div>
+
+    <!-- Top section -->
+    <div class="top-section">
+      <div class="label">heavy hill CLIMBS</div>
+      <div class="top-row">
+        <div class="profile-graph">
+          <div class="bars base">
+            <div class="pbar z3"></div>
+            <div class="pbar z3"></div>
+            <div class="pbar z4"></div>
+          </div>
+          <div class="bars fill" id="profileFill">
+            <div class="pbar z3"></div>
+            <div class="pbar z3"></div>
+            <div class="pbar z4"></div>
+          </div>
+        </div>
+        <div class="time-block">
+          <div class="time" id="sectionTime">0:40</div>
+          <div class="sub">STANDING</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Power card -->
+    <div class="power-card">
+      <div class="panel-watts">
+        <div class="ph">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.88831 11.5392C3.02186 11.623 3.17645 11.6672 3.33413 11.6667H9.16681C9.30159 11.6663 9.43446 11.6985 9.55403 11.7607C9.67361 11.823 9.77631 11.9132 9.85332 12.0239C9.93034 12.1345 9.97937 12.2622 9.99622 12.3959C10.0131 12.5297 9.99723 12.6655 9.95005 12.7918L8.35023 17.8087C8.32517 17.8999 8.33183 17.9968 8.36912 18.0837C8.4064 18.1705 8.47211 18.2421 8.55543 18.2867C8.63876 18.3313 8.73477 18.3462 8.82769 18.329C8.92062 18.3118 9.00494 18.2635 9.06682 18.1921L17.3159 9.69159C17.4152 9.56912 17.4778 9.42096 17.4963 9.26435C17.5148 9.10773 17.4885 8.94908 17.4204 8.80682C17.3524 8.66457 17.2453 8.54454 17.1118 8.4607C16.9782 8.37686 16.8236 8.33264 16.666 8.33317H10.8333C10.6985 8.33361 10.5656 8.30134 10.4461 8.23914C10.3265 8.17693 10.2238 8.08664 10.1468 7.97601C10.0698 7.86538 10.0207 7.73772 10.0039 7.60397C9.98702 7.47022 10.0029 7.33438 10.05 7.20811L11.6499 2.19114C11.6749 2.10001 11.6683 2.00306 11.631 1.91622C11.5937 1.82937 11.528 1.75778 11.4447 1.7132C11.3613 1.66862 11.2653 1.6537 11.1724 1.67089C11.0795 1.68808 10.9952 1.73635 10.9333 1.80779L2.6842 10.3083C2.58486 10.4308 2.52231 10.5789 2.5038 10.7355C2.4853 10.8921 2.51161 11.0508 2.57967 11.1931C2.64773 11.3353 2.75476 11.4553 2.88831 11.5392Z" fill="#A6A6A6"/></svg>
+          <span>POWER</span>
+        </div>
+        <div class="watts-value"><span id="watts">75</span><span class="pct">%</span></div>
+        <div class="target-block">
+          <div class="t1">TARGET</div>
+          <div class="t2">Z3 (75-90 %)</div>
+        </div>
+      </div>
+
+      <!-- Zone sidebar -->
+      <div class="sidebar" id="sidebar">
+        <div class="pos-bar" id="posBar"></div>
+        <!-- zone rows injected by JS -->
+      </div>
+    </div>
+
+    <!-- Metric tiles -->
+    <div class="metrics">
+      <div class="tile">
+        <div class="th">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+          <span>RPM</span>
+        </div>
+        <div class="big">
+          <span class="num" id="rpm">65</span>
+          <svg class="chev" id="rpmChev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m17 11-5-5-5 5"/><path d="m17 18-5-5-5 5"/></svg>
+        </div>
+        <div class="foot">TARGET - 70</div>
+      </div>
+      <div class="tile">
+        <div class="th">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.35-9.5-8.5C.5 9 2 5.5 5.5 5.5c2 0 3.2 1.2 4.5 3 1.3-1.8 2.5-3 4.5-3C18 5.5 19.5 9 17.5 12.5 15 16.65 12 21 12 21z"/></svg>
+          <span>HR</span>
+        </div>
+        <div class="big">
+          <span class="num" id="hr">93</span><span class="pct">%</span>
+        </div>
+        <div class="foot hidden">TARGET - 70</div>
+      </div>
+    </div>
+
+    <div class="home-indicator"><div></div></div>
+  </div>
+</div>
+
+<!-- Prototype controls (not part of the app) -->
+<div class="controls">
+  <div class="ctitle">Variant A · v2 · zone-cell sidebar · prototype controls</div>
+  <div class="row">
+    <button id="playBtn">⏸ Pause demo</button>
+    <button id="resetBtn" class="ghost">↺ Restart</button>
+    <div class="readout">
+      <span class="dot" id="dot"></span>
+      <span id="readZone">Z2</span>
+      <span class="tag" id="readPct">75% FTP</span>
+      <span id="readState">below target</span>
+    </div>
+  </div>
+  <div class="row slider-row">
+    <label for="scrub">Scrub power</label>
+    <input type="range" id="scrub" min="40" max="172" value="86" step="1" />
+  </div>
+  <div class="hint">Same logic as variant A — current zone highlights, the target zone <b>expands</b> when you're in it, and a separate <b>white bar</b> shows your exact position within the zone (no arrow). Auto-demo climbs Z2 → into the Z3 target (expands) → up through Z3 → over into Z4 (collapses) → back, on a loop. Drag the slider to drive power.</div>
+</div>
+
+<script>
+  // ---- Zone model: real cycling power zones (Coggan, % of FTP) ----
+  const FTP = 115; // rider's Functional Threshold Power, watts (internal — UI shows %)
+  const ZONES = [ // top → bottom in the sidebar; bands are % of FTP
+    { id:'Z6', name:'ANAEROBIC',  color:'#FF4949', loPct:120, hiPct:150 },
+    { id:'Z5', name:'VO2 MAX',    color:'#FE9339', loPct:105, hiPct:120 },
+    { id:'Z4', name:'THRESHOLD',  color:'#FFCF38', loPct:90,  hiPct:105 },
+    { id:'Z3', name:'TEMPO',      color:'#1FF43B', loPct:75,  hiPct:90, target:true },
+    { id:'Z2', name:'ENDURANCE',  color:'#42FFFF', loPct:55,  hiPct:75 },
+    { id:'Z1', name:'RECOVERY',   color:'#48C2FF', loPct:0,   hiPct:55 },
+  ];
+  ZONES.forEach(z => { z.min = z.loPct/100*FTP; z.max = z.hiPct/100*FTP; });
+  const TARGET_IDX = ZONES.findIndex(z => z.target);
+  const W_MIN = 40, W_MAX = Math.round(ZONES[0].max);
+
+  function hexToRgba(hex, a){
+    const n = parseInt(hex.slice(1),16);
+    return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`;
+  }
+
+  // ---- Build sidebar (each row = colored cell + right-aligned label) ----
+  const sidebar = document.getElementById('sidebar');
+  const posBar  = document.getElementById('posBar');
+  const zoneRows = ZONES.map(z => {
+    const row = document.createElement('div');
+    row.className = 'zone-row' + (z.target ? ' target' : '');
+    row.style.setProperty('--c', z.color);
+    row.style.setProperty('--c30', hexToRgba(z.color, 0.3));
+    const cell  = document.createElement('div'); cell.className = 'zone-cell';
+    const label = document.createElement('div'); label.className = 'zone-label'; label.textContent = z.id;
+    row.appendChild(cell); row.appendChild(label);
+    sidebar.appendChild(row);
+    return row;
+  });
+
+  // ---- DOM refs ----
+  const wattsEl   = document.getElementById('watts');
+  const readZone  = document.getElementById('readZone');
+  const readPct   = document.getElementById('readPct');
+  const readState = document.getElementById('readState');
+  const dot       = document.getElementById('dot');
+  const scrub     = document.getElementById('scrub');
+  const playBtn   = document.getElementById('playBtn');
+  const resetBtn  = document.getElementById('resetBtn');
+  const rpmEl     = document.getElementById('rpm');
+  const rpmChev   = document.getElementById('rpmChev');
+  const hrEl      = document.getElementById('hr');
+  const profileFill = document.getElementById('profileFill');
+  const sectionTime = document.getElementById('sectionTime');
+
+  // ---- Workout pushes: per-segment countdown + bar-by-bar fill ----
+  const GRAPH_W = 118;
+  const SEGMENTS = [
+    { dur:40, x0:0,  x1:45  },  // push 1 · Z3 · 0:40
+    { dur:40, x0:49, x1:94  },  // push 2 · Z3 · 0:40
+    { dur:20, x0:98, x1:118 },  // push 3 · Z4 · 0:20
+  ];
+  const SEG_TOTAL = SEGMENTS.reduce((s, seg) => s + seg.dur, 0); // 100s
+  let segElapsed = 0;
+
+  function fmtTime(s){
+    s = Math.max(0, Math.ceil(s));
+    const m = Math.floor(s/60);
+    return m + ':' + String(s%60).padStart(2,'0');
+  }
+  function renderSegment(dt){
+    if(playing){
+      segElapsed += dt;
+      if(segElapsed >= SEG_TOTAL) segElapsed -= SEG_TOTAL;
+    }
+    let e = segElapsed, i = 0;
+    while(i < SEGMENTS.length - 1 && e >= SEGMENTS[i].dur){ e -= SEGMENTS[i].dur; i++; }
+    const seg = SEGMENTS[i];
+    const p = Math.min(1, e / seg.dur);
+    const front = seg.x0 + p * (seg.x1 - seg.x0);
+    profileFill.style.clipPath = `inset(0 ${(1 - front/GRAPH_W) * 100}% 0 0)`;
+    sectionTime.textContent = fmtTime(seg.dur - e);
+  }
+
+  // ---- Auto-demo timeline (seconds → watts) ----
+  const KEYS = [
+    { t:0,    w:86  },  // Z2, near top
+    { t:2.5,  w:86  },
+    { t:5,    w:94  },  // enter Z3 (expands), bar low
+    { t:8,    w:102 },  // progress up Z3, bar rises
+    { t:10,   w:102 },
+    { t:12.5, w:114 },  // climb into Z4 (Z3 collapses)
+    { t:14.5, w:114 },
+    { t:17,   w:96  },  // drop back into Z3 (re-expands)
+    { t:19,   w:86  },  // back to Z2  (== t:0, loops)
+  ];
+  const LOOP = 19;
+  const smooth = t => t*t*(3-2*t);
+
+  function wattsAt(time){
+    const tt = ((time % LOOP) + LOOP) % LOOP;
+    for(let i=0;i<KEYS.length-1;i++){
+      const a=KEYS[i], b=KEYS[i+1];
+      if(tt>=a.t && tt<=b.t){
+        const f = smooth((tt-a.t)/(b.t-a.t));
+        return a.w + (b.w-a.w)*f;
+      }
+    }
+    return KEYS[KEYS.length-1].w;
+  }
+
+  // ---- State ----
+  let playing = true;
+  let startTime = performance.now();
+  let manualW = 86;
+
+  function activeIndex(w){
+    if(w >= ZONES[0].max) return 0;
+    for(let i=0;i<ZONES.length;i++){
+      if(w >= ZONES[i].min && w < ZONES[i].max) return i;
+    }
+    return ZONES.length-1;
+  }
+
+  function render(w){
+    w = Math.max(W_MIN, Math.min(W_MAX, w));
+    const idx = activeIndex(w);
+    const z = ZONES[idx];
+    const frac = Math.max(0, Math.min(1, (w - z.min)/(z.max - z.min)));
+
+    // power shown as % of FTP (the UI never shows raw watts)
+    const wi = Math.round(w);
+    wattsEl.textContent = Math.round(w / FTP * 100);
+
+    // zone states: highlight current, expand it only if it's the target
+    zoneRows.forEach((row,i)=>{
+      row.classList.toggle('active', i===idx);
+      row.classList.toggle('expanded', i===idx && i===TARGET_IDX);
+    });
+
+    // position bar: glide to the exact spot inside the current cell (frac=1 → top)
+    const aRow = zoneRows[idx];
+    posBar.style.top = (aRow.offsetTop + (1 - frac) * aRow.offsetHeight) + 'px';
+
+    // readout
+    let state, stateColor;
+    if(idx < TARGET_IDX){ state='above target'; stateColor='#FFCF38'; }
+    else if(idx > TARGET_IDX){ state='below target'; stateColor='#42FFFF'; }
+    else { state='in target'; stateColor='#1FF43B'; }
+    readZone.textContent = z.id + ' · ' + z.name;
+    readPct.textContent = Math.round(w/FTP*100) + '% FTP';
+    readState.textContent = state;
+    dot.style.background = z.color;
+    dot.style.color = z.color;
+    readState.style.color = stateColor;
+
+    if(!dragging) scrub.value = wi;
+  }
+
+  // ---- Cadence (RPM) & Heart-rate simulation ----
+  const CAD_TARGET = 70;
+  let hr = 90;
+  let lastNow = performance.now();
+  let cadBase = 65, cadDisplay = 65, cadTimer = 0;
+
+  function cadCenter(w){
+    if(w <= 104) return 65 + (w - 86) / (104 - 86) * 3;
+    return 88 + (w - 114) * 0.4;
+  }
+  function cadOsc(t){ return 1.8*Math.sin(t*0.42) + 0.9*Math.sin(t*0.18 + 1.3); }
+
+  function updateHR(dt, w){
+    const e = Math.max(0, Math.min(1, (w - 60) / 80));
+    const hrTarget = 80 + e * 17;
+    const tau = (hrTarget > hr) ? 11 : 20;
+    hr += (hrTarget - hr) * (1 - Math.exp(-dt / tau));
+    hr += (Math.random() - 0.5) * 0.15;
+    hr = Math.max(60, Math.min(99, hr));
+  }
+
+  function renderMetrics(now, w, dt){
+    const t = now / 1000;
+    cadBase += (cadCenter(w) - cadBase) * (1 - Math.exp(-dt / 1.8));
+    cadTimer += dt;
+    if(cadTimer >= 1){
+      cadTimer = 0;
+      cadDisplay = Math.round(cadBase + cadOsc(t));
+    }
+    rpmEl.textContent = cadDisplay;
+    const below = cadDisplay < CAD_TARGET - 1;
+    const above = cadDisplay > CAD_TARGET + 1;
+    rpmChev.style.display = (below || above) ? '' : 'none';
+    rpmChev.style.transform = above ? 'rotate(180deg)' : 'rotate(0deg)';
+    rpmChev.style.color = above ? '#FF4949' : '#1FF43B';
+    hrEl.textContent = Math.round(hr);
+  }
+
+  // ---- Loop ----
+  function frame(now){
+    let dt = (now - lastNow) / 1000;
+    lastNow = now;
+    if(dt > 0.25) dt = 0.25;
+
+    let w = playing ? wattsAt((now - startTime)/1000) : manualW;
+    w = Math.max(W_MIN, Math.min(W_MAX, w));
+
+    updateHR(dt, w);
+    render(w);
+    renderMetrics(now, w, dt);
+    renderSegment(dt);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // ---- Controls ----
+  function setPlaying(p){
+    playing = p;
+    playBtn.textContent = p ? '⏸ Pause demo' : '▶ Play demo';
+    if(p) startTime = performance.now();
+  }
+  playBtn.addEventListener('click', ()=> setPlaying(!playing));
+  resetBtn.addEventListener('click', ()=>{ manualW=86; segElapsed=0; setPlaying(true); });
+
+  let dragging = false;
+  scrub.addEventListener('pointerdown', ()=>{ dragging=true; setPlaying(false); });
+  scrub.addEventListener('input', ()=>{ manualW = +scrub.value; setPlaying(false); });
+  window.addEventListener('pointerup', ()=>{ dragging=false; });
+
+  // ---- Prototype-only: freeze a state via ?w= for screenshots ----
+  (function(){
+    const qp = new URLSearchParams(location.search);
+    if(qp.has('w')){ setPlaying(false); manualW = +qp.get('w'); }
+  })();
+</script>
+</body>
+</html>
