@@ -377,7 +377,7 @@
     { dur:40, x0:49, x1:94  },  // push 2 · Z3 · 0:40
     { dur:20, x0:98, x1:118 },  // push 3 · Z4 · 0:20
   ];
-  const SEG_TOTAL = SEGMENTS.reduce((s, seg) => s + seg.dur, 0); // 100s
+  let SEG_TOTAL = SEGMENTS.reduce((s, seg) => s + seg.dur, 0); // 100s
   let segElapsed = 0;
 
   function fmtTime(s){
@@ -429,6 +429,9 @@
   // ---- Deck embed: ?chaos = power the way a real class reads it.
   // A power meter jumps every fraction of a second, so the reading keeps crossing zone edges.
   if (/[?&]chaos\b/.test(location.search)) {
+    // longer sections, so the timeline doesn't visibly restart while it's on screen
+    SEGMENTS.forEach(seg => { seg.dur *= 4; });
+    SEG_TOTAL *= 4;
     let from = 95, to = 95, t0 = 0, nextJump = 0;
     const base = t => 95 + 8 * Math.sin(t * 0.5);
     const now = t => from + (to - from) * Math.min(1, (t - t0) / 0.12);

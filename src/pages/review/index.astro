@@ -499,11 +499,19 @@
     .b81-dirs .pair { display: flex; gap: 16px; }
     .b81-dirs .b81-scr { width: 264px; }
     /* prototype: four static states, then the live prototype */
-    .b81-proto { display: flex; align-items: center; justify-content: center; gap: 64px; margin: auto -48px; }
-    .b81-states { display: flex; gap: 16px; }
-    .b81-states .b81-scr { width: 264px; }
-    .b81-live { position: relative; width: 264px; height: 574px; flex: none; overflow: hidden; background: #000; }
-    .b81-live iframe { display: block; width: 402px; height: 874px; border: 0; transform: scale(.65672); transform-origin: 0 0; pointer-events: none; }
+    .b81-proto { display: flex; align-items: flex-start; justify-content: center; gap: 96px; margin: auto -48px; }
+    .b81-group { display: flex; flex-direction: column; }
+    .b81-group.statics { margin-top: 74px; }  /* screen bottoms line up with the prototype's */
+    .b81-group.live { width: 250px; }
+    .b81-states { display: flex; gap: 14px; }
+    .b81-states .b81-scr { width: 216px; }
+    /* bracket under a group of screens, with its label */
+    .b81-group figcaption { display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .b81-brace { align-self: stretch; height: 12px; margin-top: 18px; border: 1.5px solid var(--line-strong); border-top: 0; border-radius: 0 0 4px 4px; }
+    .b81-group figcaption b { font-size: 16px; font-weight: 700; color: var(--ink); margin-top: 14px; }
+    .b81-group figcaption span.say { font-size: 16px; line-height: 1.5; color: var(--ink-2); margin-top: 6px; width: 330px; }
+    .b81-live { position: relative; width: 250px; height: 544px; flex: none; overflow: hidden; background: #000; }
+    .b81-live iframe { display: block; width: 402px; height: 874px; border: 0; transform: scale(.62189); transform-origin: 0 0; pointer-events: none; }
     /* motion: four clips, one per click; the newest plays, earlier ones stop and dim */
     .title.one-line { max-width: none; white-space: nowrap; }
     .b81-clips { display: flex; justify-content: space-between; margin-top: 40px; padding: 0 40px; }
@@ -1253,13 +1261,19 @@
       <section class="slide dark" id="beat81-prototype" data-title="Beat81: deciding with a prototype" data-group="Beat81">
         <div class="meta"><span>Beat81 Power Zones</span><span>Push screen / Prototype</span></div>
         <div class="b81-proto">
-          <div class="b81-states">
+          <figure class="b81-group statics">
+            <div class="b81-states">
             <img class="b81-scr" src="/review/b81-p1-below.png" alt="Vertical zones: power below the Z3 target" />
             <img class="b81-scr" src="/review/b81-p2-at.png" alt="Vertical zones: power at the Z3 target" />
             <img class="b81-scr" src="/review/b81-p3-at-top.png" alt="Vertical zones: power at the top of Z3" />
             <img class="b81-scr" src="/review/b81-p4-above.png" alt="Vertical zones: power above, in Z4" />
-          </div>
-          <div class="b81-live step"><iframe data-src="/review/b81-zone-proto.html?clean&amp;chaos" title="Vertical zone prototype, playing a simulated ride" tabindex="-1"></iframe></div>
+            </div>
+            <figcaption><span class="b81-brace"></span><b>Static designs</b></figcaption>
+          </figure>
+          <figure class="b81-group live step">
+            <div class="b81-live"><iframe data-src="/review/b81-zone-proto.html?clean&amp;chaos" title="Vertical zone prototype, playing a simulated ride" tabindex="-1"></iframe></div>
+            <figcaption><span class="b81-brace"></span><b>Prototype</b><span class="say">With live power, this direction was too hectic for a real class.</span></figcaption>
+          </figure>
         </div>
         <aside class="notes-src" hidden>
           <ul>
