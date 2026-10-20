@@ -426,6 +426,21 @@
     return KEYS[KEYS.length-1].w;
   }
 
+  // ---- Deck embed: ?chaos = power the way a real class reads it.
+  // A power meter jumps every fraction of a second, so the reading keeps crossing zone edges.
+  if (/[?&]chaos\b/.test(location.search)) {
+    let from = 95, to = 95, t0 = 0, nextJump = 0;
+    const base = t => 95 + 8 * Math.sin(t * 0.5);
+    const now = t => from + (to - from) * Math.min(1, (t - t0) / 0.12);
+    wattsAt = function (time) {
+      if (time >= nextJump || time < t0) {
+        from = now(time); to = base(time) + (Math.random() - 0.5) * 36;
+        t0 = time; nextJump = time + 0.3 + Math.random() * 0.4;
+      }
+      return now(time);
+    };
+  }
+
   // ---- State ----
   let playing = true;
   let startTime = performance.now();
